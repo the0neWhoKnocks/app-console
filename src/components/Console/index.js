@@ -84,7 +84,7 @@ class Console extends Component {
                 }
               }}
               ndx={this.state.pluginNdx}
-              panelClass={`${styles.pluginPanel}`}
+              panelClass={`${styles.pluginPanel} ${currPlugin.panelClass}`}
             />
           )}
         </div>

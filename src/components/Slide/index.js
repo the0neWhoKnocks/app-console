@@ -12,7 +12,7 @@ class Slide extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.component && nextProps.ndx !== prevState.ndx) {
+    if (nextProps.component && +nextProps.ndx !== +prevState.ndx) {
       const newState = {
         items: [...prevState.items],
         ndx: +nextProps.ndx,
