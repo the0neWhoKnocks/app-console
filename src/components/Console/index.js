@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import setTransitionState from '../../utils/setTransitionState';
 import Toggle from '../Toggle';
 import Slide from '../Slide';
 import styles from './styles';
@@ -10,9 +11,30 @@ class Console extends Component {
       activePlugin: undefined,
       isOpen: props.toggled || false,
       pluginNdx: undefined,
+      stylesLoaded: false,
     };
     this.handleConsoleToggle = this.handleConsoleToggle.bind(this);
     this.handlePluginToggle = this.handlePluginToggle.bind(this);
+  }
+
+  componentDidMount() {
+    const glamorStyles = document.head.querySelector('[data-glamor]');
+    const materialIcons = document.createElement('link');
+    materialIcons.id = 'materialIcons';
+    materialIcons.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+    materialIcons.rel = 'stylesheet';
+
+    if(!glamorStyles){
+      document.head.appendChild(materialIcons);
+    }
+    else{
+      document.head.insertBefore(materialIcons, glamorStyles);
+    }
+
+    // most likely not truly loaded on an empty cache, but close enough
+    setTransitionState(this, {
+      stylesLoaded: true,
+    });
   }
 
   handleConsoleToggle(ev) {
@@ -91,7 +113,7 @@ class Console extends Component {
         <Toggle
           id="consoleToggle"
           onToggle={this.handleConsoleToggle}
-          rootClass={`${styles.toggle}`}
+          rootClass={`${styles.toggle} ${(this.state.stylesLoaded) ? 'is--visible' : ''}`}
           toggled={isOpen}
         >
           <i className="material-icons">view_comfy</i>

@@ -11,9 +11,9 @@ css.insert(`
     --console-module-bg-primary-color: #00182754;
     --console-module-bg-secondary-color: #81d4ff26;
   }
-  
+
   .material-icons {
-    font-size: inherit;  
+    font-size: inherit;
   }
 `);
 
@@ -80,12 +80,18 @@ const styles = {
   }),
 
   toggle: css({
+    transform: 'translateX(-100%)',
+    transition: `transform ${revealSpeed}`,
     position: 'fixed',
     top: '0.5em',
     left: '0.5em',
 
     ' i': {
       fontSize: '1.5em',
+    },
+
+    '.is--visible': {
+      transform: 'translateX(0%)'
     },
   }),
 
