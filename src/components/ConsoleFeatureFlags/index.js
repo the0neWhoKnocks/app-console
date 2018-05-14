@@ -1,20 +1,56 @@
-import { connect } from 'react-redux';
-import { actions } from '../../store';
-import FlagsConsolePlugin from './component';
+import React from 'react';
+import Toggle from '../Toggle';
+import styles from './styles';
 
-const mapFlagProps = (state) => ({
-  flags: state.flags,
-});
+const ConsoleFeatureFlags = ({ flags, setFlags }) => {
+  const updateQuery = (ev) => {
+    const el = ev.currentTarget;
+    const param = `${el.dataset.name}=${el.checked}`;
+    let params = (window.location.search)
+      ? window.location.search.replace('?', '').split('&')
+      : [];
 
-const mapFlagDispatch = {
-  setFlags: actions.setFlags,
+    params = params.filter((p) => p.indexOf(el.dataset.name));
+    params.push(param);
+
+    const newURL = `${window.location.origin}${window.location.pathname}${(params.length ? '?' : '')}${params.join('&')}`;
+
+    window.history.replaceState('', '', newURL);
+
+    setFlags(Object.assign({}, flags, {
+      [el.dataset.name]: el.checked,
+    }));
+  };
+
+  return (
+    <ul className={`${styles.root}`}>
+      {Object.keys(flags)
+        .sort((a, b) => a > b)
+        .map((flag) => {
+          const enabled = flags[flag];
+          const icon = (enabled) ? 'check_circle' : 'cancel';
+          const enabledClass = (enabled) ? 'is--enabled' : 'is--disabled';
+          return (
+            <li className={`${styles.li}`} key={flag}>
+              <Toggle
+                data={{
+                  'data-name': flag,
+                }}
+                id={`flagToggle_${flag}`}
+                onToggle={updateQuery}
+                rootClass={`${styles.flagToggle}`}
+                title="Click to toggle feature"
+                toggled={enabled}
+              >
+                <i className={`material-icons ${styles.icon} ${enabledClass}`}>{icon}</i>
+                <span className={`${styles.flagName}`}>{flag}</span>
+              </Toggle>
+            </li>
+          );
+        }
+        )}
+    </ul>
+  );
 };
 
-const flagsPlugin = {
-  Component: connect(mapFlagProps, mapFlagDispatch)(FlagsConsolePlugin),
-  icon: 'book',
-  id: 'flagsToggle',
-  name: 'Flags',
-};
-
-export default flagsPlugin;
+export default ConsoleFeatureFlags;
