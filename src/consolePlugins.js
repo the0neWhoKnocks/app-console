@@ -67,7 +67,7 @@ const plugins = [
   consolePlugin({
     Component: AppStore,
     icon: 'layers',
-    id: 'storeToggle',
+    id: 'storeConsolePlugin',
     name: 'Store',
     panelClass: css({
       overflow: 'auto',
@@ -80,7 +80,7 @@ const plugins = [
   consolePlugin({
     Component: Providers,
     icon: 'device_hub',
-    id: 'providersToggle',
+    id: 'providersConsolePlugin',
     name: 'Providers',
     props: {
       providers: providersData,
@@ -97,14 +97,14 @@ const plugins = [
       }
     )(FeatureFlags),
     icon: 'book',
-    id: 'flagsToggle',
+    id: 'flagsConsolePlugin',
     name: 'Flags',
   }),
 
   consolePlugin({
     Component: MetaData,
     icon: 'info',
-    id: 'metadataToggle',
+    id: 'metadataConsolePlugin',
     name: 'Meta Data',
   }),
 ];
