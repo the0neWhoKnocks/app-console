@@ -1,5 +1,5 @@
 import React from 'react';
-import pad from '../../utils/pad';
+import pad from '../../../utils/pad';
 import styles from './styles';
 
 const ConsoleMetaData = () => {

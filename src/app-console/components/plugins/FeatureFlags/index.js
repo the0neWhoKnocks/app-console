@@ -1,5 +1,5 @@
 import React from 'react';
-import Toggle from '../Toggle';
+import Toggle from '../../Toggle';
 import styles from './styles';
 
 const ConsoleFeatureFlags = ({ flags, setFlags }) => {

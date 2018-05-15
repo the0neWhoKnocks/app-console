@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import store from './store';
 import App from './App';
-import Console from './components/Console';
+import { Console } from './app-console';
 import consolePlugins from './consolePlugins';
 
 render(

@@ -1,11 +1,13 @@
 import { css } from 'glamor';
 import { connect } from 'react-redux';
 import store, { actions } from './store';
-import consolePlugin from './utils/consolePlugin';
-import ConsoleAppStore from './components/ConsoleAppStore';
-import ConsoleFeatureFlags from './components/ConsoleFeatureFlags';
-import ConsoleMetaData from './components/ConsoleMetaData';
-import ConsoleProviders from './components/ConsoleProviders';
+import {
+  consolePlugin,
+  AppStore,
+  FeatureFlags,
+  MetaData,
+  Providers,
+} from './app-console';
 
 // this is just mock data
 const providersData = [
@@ -63,7 +65,7 @@ const providersData = [
 
 const plugins = [
   consolePlugin({
-    Component: ConsoleAppStore,
+    Component: AppStore,
     icon: 'layers',
     id: 'storeToggle',
     name: 'Store',
@@ -76,7 +78,7 @@ const plugins = [
   }),
 
   consolePlugin({
-    Component: ConsoleProviders,
+    Component: Providers,
     icon: 'device_hub',
     id: 'providersToggle',
     name: 'Providers',
@@ -93,14 +95,14 @@ const plugins = [
       {
         setFlags: actions.setFlags,
       }
-    )(ConsoleFeatureFlags),
+    )(FeatureFlags),
     icon: 'book',
     id: 'flagsToggle',
     name: 'Flags',
   }),
 
   consolePlugin({
-    Component: ConsoleMetaData,
+    Component: MetaData,
     icon: 'info',
     id: 'metadataToggle',
     name: 'Meta Data',
