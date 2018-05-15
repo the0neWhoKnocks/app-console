@@ -1,8 +1,9 @@
 import React from 'react';
+import { array, object, oneOfType } from 'prop-types';
 import ConsolePluginError from '../../ConsolePluginError';
 import DataTree from '../../DataTree';
 
-const ConsoleAppStore = ({ data }) => (!data)
+const AppStore = ({ data }) => (!data)
   ? (
       <ConsolePluginError>
         No store <code>data</code> was provided.
@@ -10,4 +11,11 @@ const ConsoleAppStore = ({ data }) => (!data)
     )
   : <DataTree data={data} />;
 
-export default ConsoleAppStore;
+AppStore.propTypes = {
+  data: oneOfType([
+    array,
+    object,
+  ]),
+};
+
+export default AppStore;

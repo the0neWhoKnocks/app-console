@@ -54,6 +54,9 @@ const plugins = [
     icon: 'info',
     id: 'metadataConsolePlugin',
     name: 'Meta Data',
+    props: {
+      data: store.getState().metaData,
+    },
   }),
 ];
 

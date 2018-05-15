@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { string } from 'prop-types';
 import styles from './styles';
 
 class Slide extends Component {
@@ -62,5 +63,10 @@ class Slide extends Component {
     );
   }
 }
+
+Slide.propTypes = {
+  className: string,
+  panelClass: string,
+};
 
 export default Slide;

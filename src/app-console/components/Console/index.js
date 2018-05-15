@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { array, bool } from 'prop-types';
 import setTransitionState from '../../utils/setTransitionState';
 import Toggle from '../Toggle';
 import Slide from '../Slide';
@@ -9,7 +10,7 @@ class Console extends Component {
     super();
     this.state = {
       activePlugin: undefined,
-      isOpen: props.toggled || false,
+      isOpen: props.toggled,
       pluginNdx: undefined,
       stylesLoaded: false,
     };
@@ -122,5 +123,13 @@ class Console extends Component {
     );
   }
 }
+
+Console.defaultProps = {
+  toggled: false,
+};
+Console.propTypes = {
+  plugins: array,
+  toggled: bool,
+};
 
 export default Console;

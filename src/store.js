@@ -32,6 +32,7 @@ const initialState = {
     },
     num: 1337,
   },
+  metaData: [],
   providers: [
     {
       name: 'search',
@@ -85,6 +86,18 @@ const initialState = {
     }
   ],
 };
+
+const metaDataEl = document.head.querySelector('[name="application-data"]');
+if(!metaDataEl) throw Error("No DOM element found with `name` `application-data`.");
+const metaDataAtts = metaDataEl.attributes;
+
+Object.keys(metaDataAtts).forEach((ndx) => {
+  const att = metaDataAtts[ndx];
+  if (att.name.indexOf('data-') === 0) initialState.metaData.push({
+    name: att.name.replace('data-', '').replace(/-/g, ' '),
+    value: att.nodeValue,
+  });
+});
 
 const types = {
   SET_FLAGS: 'SET_FLAGS',
