@@ -1,9 +1,20 @@
 import React from 'react';
+import ConsolePluginError from '../../ConsolePluginError';
 import pad from '../../../utils/pad';
 import styles from './styles';
 
 const ConsoleMetaData = () => {
-  const atts = document.head.querySelector('[name="application-data"]').attributes;
+  const domEl = document.head.querySelector('[name="application-data"]');
+
+  if(!domEl){
+    return (
+      <ConsolePluginError>
+        No DOM element found with <code>name</code> <code>application-data</code>.
+      </ConsolePluginError>
+    );
+  }
+
+  const atts = domEl.attributes;
   let parsed = [];
 
   Object.keys(atts).forEach((ndx) => {
@@ -13,6 +24,14 @@ const ConsoleMetaData = () => {
       value: att.nodeValue,
     });
   });
+
+  if(!parsed.length){
+    return (
+      <ConsolePluginError>
+        No data attributes were found on the <code>application-data</code> element.
+      </ConsolePluginError>
+    );
+  }
 
   parsed = parsed.sort((a, b) => a.name > b.name);
 

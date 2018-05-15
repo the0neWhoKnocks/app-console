@@ -24,15 +24,6 @@ const animations = {
     for (let i = 0; i < range; i++) {
       const perc = `${5 * i}%`;
       ret[perc] = {
-        // May have to use the `fallback` syntax for vars in IE https://github.com/threepointone/glamor/blob/master/docs/howto.md#fallbacks.
-        // Glamor doesn't prefix radial gradients correctly, basically it adds them all to one `background` prop wrather than multiple stacked properties
-        // which results in a bad rule, and the animation not working. Right now, radial and webkit play alright, but moz does not.
-        // backgroundImage: [
-        //   `radial-gradient(circle at var(--console-btn-x-pos) var(--console-btn-y-pos), var(--console-plugin-btn-toggled-color) ${perc}, transparent ${perc})`,
-        //   `-webkit-radial-gradient(var(--console-btn-x-pos) var(--console-btn-y-pos), circle cover, var(--console-plugin-btn-toggled-color) ${perc}, transparent ${perc})`
-        //   // `-moz-radial-gradient(var(--console-btn-x-pos) var(--console-btn-y-pos), circle cover, var(--console-plugin-btn-toggled-color) ${perc}, transparent ${perc})`,
-        // ].join(',')
-
         backgroundImage: `radial-gradient(circle at var(--console-btn-x-pos) var(--console-btn-y-pos), var(--console-plugin-btn-toggled-color) ${perc}, transparent ${perc})`,
       };
     }

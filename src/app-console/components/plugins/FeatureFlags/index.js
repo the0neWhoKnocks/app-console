@@ -1,4 +1,5 @@
 import React from 'react';
+import ConsolePluginError from '../../ConsolePluginError';
 import Toggle from '../../Toggle';
 import styles from './styles';
 
@@ -21,6 +22,14 @@ const ConsoleFeatureFlags = ({ flags, setFlags }) => {
       [el.dataset.name]: el.checked,
     }));
   };
+
+  if(!flags || !Object.keys(flags).length){
+    return (
+      <ConsolePluginError>
+        No <code>flags</code> data was provided.
+      </ConsolePluginError>
+    );
+  }
 
   return (
     <ul className={`${styles.root}`}>

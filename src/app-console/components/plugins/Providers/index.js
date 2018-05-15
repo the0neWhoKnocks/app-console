@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import DataTree from '../../DataTree';
+import ConsolePluginError from '../../ConsolePluginError';
 import styles from './styles';
 
 class ConsoleProviders extends Component {
@@ -54,6 +55,14 @@ class ConsoleProviders extends Component {
 
   render() {
     const { providers } = this.props;
+
+    if(!providers || !providers.length){
+      return (
+        <ConsolePluginError>
+          The <code>providers</code> data was empty.
+        </ConsolePluginError>
+      );
+    }
 
     return (
       <Fragment>
