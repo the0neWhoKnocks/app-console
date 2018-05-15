@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import DataTree from '../DataTree';
+import DataTree from '../../DataTree';
 import styles from './styles';
 
 class ConsoleProviders extends Component {

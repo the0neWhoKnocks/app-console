@@ -1,5 +1,5 @@
 import React from 'react';
-import DataTree from '../DataTree';
+import DataTree from '../../DataTree';
 
 const ConsoleAppStore = ({ data }) => <DataTree data={data} />;
 
