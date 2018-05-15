@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { object, string } from 'prop-types';
 import { transitionEnd } from '../../utils/prefixTransition';
 import setTransitionState from '../../utils/setTransitionState';
 import styles from './styles';
@@ -75,7 +76,7 @@ class DataBranch extends Component {
   }
 
   /**
-   * After a branch has opened, the height needs to be set to auto to allow for 
+   * After a branch has opened, the height needs to be set to auto to allow for
    * internal branches to open or close and not be locked in by the parent's
    * hard-coded height.
    */
@@ -90,28 +91,42 @@ class DataBranch extends Component {
   }
 
   render() {
+    const {
+      branchData,
+      inputID,
+      labelClass,
+      labelText,
+    } = this.props;
+
     return (
       <Fragment>
         <input
           className={`${styles.input}`}
           type="checkbox"
-          id={this.props.inputID}
+          id={inputID}
           checked={this.state.toggled}
           onChange={this.handleToggle}
           ref={(input) => {this.inputEl = input}}
         />
         <label
-          className={`${styles.label} ${this.props.labelClass}`}
-          htmlFor={this.props.inputID}
-        >{this.props.labelText}</label>
+          className={`${styles.label} ${labelClass}`}
+          htmlFor={inputID}
+        >{labelText}</label>
         <div
           className={`${styles.children} ${this.state.heightClass}`}
           style={this.state.styles}
           ref={(children) => {this.childrenEl = children}}
-        >{this.props.branchData}</div>
+        >{branchData}</div>
       </Fragment>
     );
   }
 }
+
+DataBranch.propTypes = {
+  branchData: object,
+  inputID: string,
+  labelClass: string,
+  labelText: string,
+};
 
 export default DataBranch;

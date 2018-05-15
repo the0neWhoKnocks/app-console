@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
+import { array, bool, object, oneOfType, string } from 'prop-types';
 import DataBranch from '../DataBranch';
 import styles from './styles';
 
-const DataTree = ({ data, par, sort = true }) => {
+const DataTree = ({ data, par, sort }) => {
   let childKeys = Object.keys(data);
 
   if (sort) childKeys = childKeys.sort((a, b) => a > b);
@@ -53,6 +54,18 @@ const DataTree = ({ data, par, sort = true }) => {
   });
 
   return <ul className={(!par) ? `${styles.root}` : `${styles.ul}`} key={par}>{children}</ul>;
+};
+
+DataTree.defaultProps = {
+  sort: true,
+};
+DataTree.propTypes = {
+  data: oneOfType([
+    array,
+    object,
+  ]),
+  par: string,
+  sort: bool,
 };
 
 export default DataTree;

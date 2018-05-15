@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
+import { array } from 'prop-types';
 import DataTree from '../../DataTree';
 import ConsolePluginError from '../../ConsolePluginError';
 import styles from './styles';
 
-class ConsoleProviders extends Component {
+class Providers extends Component {
   constructor() {
     super();
 
@@ -56,7 +57,7 @@ class ConsoleProviders extends Component {
   render() {
     const { providers } = this.props;
 
-    if(!providers || !providers.length){
+    if(!providers.length){
       return (
         <ConsolePluginError>
           The <code>providers</code> data was empty.
@@ -125,4 +126,11 @@ class ConsoleProviders extends Component {
   }
 }
 
-export default ConsoleProviders;
+Providers.defaultProps = {
+  providers: [],
+};
+Providers.propTypes = {
+  providers: array,
+};
+
+export default Providers;
