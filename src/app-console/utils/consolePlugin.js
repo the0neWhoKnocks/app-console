@@ -47,3 +47,6 @@ const consolePlugin = ({
 };
 
 export default consolePlugin;
+export {
+  defaultComponent,
+};
