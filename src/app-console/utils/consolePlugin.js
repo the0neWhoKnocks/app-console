@@ -23,7 +23,7 @@ const consolePlugin = ({
 
   if(typeof id !== 'string') {
     const random = Math.random(Date.now());
-    id = `${random}Toggle`;
+    id = `${random}ConsolePlugin`;
   }
 
   if(typeof name !== 'string')
