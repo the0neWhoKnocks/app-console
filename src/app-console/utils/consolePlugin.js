@@ -30,7 +30,7 @@ const consolePlugin = ({
     throw new Error("You didn't pass in a String for `name`");
 
   if(typeof panelClass !== 'string')
-    throw new Error("You didn't pass in a String for `name`");
+    throw new Error("You didn't pass in a String for `panelClass`");
 
   if(typeof props !== 'object')
     throw new Error("You didn't pass in an Object for `props`");

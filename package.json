@@ -5,7 +5,6 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "cross-env": "^5.1.5",
     "glamor": "2.20.40",
     "prop-types": "^15.6.1",
     "react": "16.3.2",
@@ -21,7 +20,7 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
-    "test": "cross-env CI=true react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom --watchAll"
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   }
 }
