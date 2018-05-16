@@ -1,9 +1,12 @@
+import React from 'react';
+import { shallow } from 'enzyme';
 import consolePlugin, { defaultComponent } from './consolePlugin';
 
 describe('consolePlugin', () => {
 
   it('should return a config for a default plugin', () => {
     const plugin = consolePlugin();
+    const wrapper = shallow(<plugin.Component />);
 
     expect(plugin).toEqual({
       Component: defaultComponent,
@@ -13,11 +16,7 @@ describe('consolePlugin', () => {
       panelClass: '',
       props: {},
     });
-    expect(plugin.Component()).toEqual(expect.objectContaining({
-      props: {
-        children: 'This is a default Plugin.'
-      }
-    }));
+    expect(wrapper.text()).toEqual('This is a default Plugin.');
   });
 
   it('should throw error for invalid `Component` prop', () => {
