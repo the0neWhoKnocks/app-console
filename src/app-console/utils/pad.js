@@ -1,3 +1,3 @@
-const pad = (num, token = '00') => token.substring(0, token.length - `${num}`.length) + num;
+const pad = (val, token = '00') => token.substring(0, token.length - `${val}`.length) + val;
 
 export default pad;

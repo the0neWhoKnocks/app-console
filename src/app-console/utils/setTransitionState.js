@@ -1,3 +1,5 @@
+const delay = 20;
+
 /**
  * For some reason this is needed when using CSS transitions with React,
  * otherwise some transitions don't behave as expected.
@@ -9,7 +11,10 @@
 const setTransitionState = (ctx, state, cb) => {
   setTimeout(() => {
     ctx.setState(state, cb);
-  }, 20);
+  }, delay);
 };
 
 export default setTransitionState;
+export {
+  delay,
+};

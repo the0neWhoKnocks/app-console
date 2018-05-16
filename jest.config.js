@@ -21,5 +21,9 @@ module.exports = {
   roots: [
     'src/app-console',
   ],
+  setupTestFrameworkScriptFile: './.jest/bootstrap.js',
+  setupFiles: [
+    './.jest/polyfills.js',
+  ],
   verbose: true,
 };
