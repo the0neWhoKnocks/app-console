@@ -13,6 +13,11 @@ const Toggle = ({
   title,
   toggled,
 }) => {
+  const dynamicProps = {
+    onChange: onToggle,
+  };
+  if(!onToggle) dynamicProps.defaultChecked = toggled;
+  else dynamicProps.checked = toggled;
 
   return (
     <div className={`toggle ${rootClass}`} style={style}>
@@ -20,8 +25,7 @@ const Toggle = ({
         className={`${styles.input}`}
         type="checkbox"
         id={id}
-        checked={toggled}
-        onChange={onToggle}
+        {...dynamicProps}
         {...data}
       />
       <label
@@ -34,6 +38,10 @@ const Toggle = ({
   );
 };
 
+Toggle.defaultProps = {
+  rootClass: '',
+  toggled: false,
+};
 Toggle.propTypes = {
   // CSS styles that are applied to the label wrapping the children
   childStyle: object,

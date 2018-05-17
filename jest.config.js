@@ -19,6 +19,7 @@ module.exports = {
     },
   },
   roots: [
+    // only test module code, not integration
     'src/app-console',
   ],
   setupTestFrameworkScriptFile: './.jest/bootstrap.js',
