@@ -57,6 +57,7 @@ const DataTree = ({ data, par, sort }) => {
 };
 
 DataTree.defaultProps = {
+  data: {},
   sort: true,
 };
 DataTree.propTypes = {
