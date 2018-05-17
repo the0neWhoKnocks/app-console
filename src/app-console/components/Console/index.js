@@ -5,6 +5,13 @@ import Toggle from '../Toggle';
 import Slide from '../Slide';
 import styles from './styles';
 
+const globalStyles = [
+  {
+    href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
+    id: 'materialIcons',
+  }
+];
+
 class Console extends Component {
   constructor(props) {
     super();
@@ -20,17 +27,20 @@ class Console extends Component {
 
   componentDidMount() {
     const glamorStyles = document.head.querySelector('[data-glamor]');
-    const materialIcons = document.createElement('link');
-    materialIcons.id = 'materialIcons';
-    materialIcons.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
-    materialIcons.rel = 'stylesheet';
 
-    if(!glamorStyles){
-      document.head.appendChild(materialIcons);
-    }
-    else{
-      document.head.insertBefore(materialIcons, glamorStyles);
-    }
+    globalStyles.forEach((style) => {
+      const styleTag = document.createElement('link');
+      styleTag.id = style.id;
+      styleTag.href = style.href;
+      styleTag.rel = 'stylesheet';
+
+      if(!glamorStyles){
+        document.head.appendChild(styleTag);
+      }
+      else{
+        document.head.insertBefore(styleTag, glamorStyles);
+      }
+    });
 
     // most likely not truly loaded on an empty cache, but close enough
     setTransitionState(this, {
@@ -57,7 +67,7 @@ class Console extends Component {
 
   render() {
     const { plugins } = this.props;
-    const { activePlugin, isOpen } = this.state;
+    const { activePlugin, isOpen, pluginNdx, stylesLoaded } = this.state;
     const consoleOpen = isOpen ? ' is--open' : '';
     const togglesClass = activePlugin ? ' plugin-active' : '';
     let currPlugin;
@@ -100,13 +110,13 @@ class Console extends Component {
               className={`${styles.pluginWrapper}`}
               component={{
                 Component: currPlugin.Component,
-                key: this.state.activePlugin,
+                key: activePlugin,
                 props: {
                   ...this.props,
                   ...currPlugin.props
                 }
               }}
-              ndx={this.state.pluginNdx}
+              ndx={pluginNdx}
               panelClass={`${styles.pluginPanel} ${currPlugin.panelClass}`}
             />
           )}
@@ -114,7 +124,7 @@ class Console extends Component {
         <Toggle
           id="consoleToggle"
           onToggle={this.handleConsoleToggle}
-          rootClass={`${styles.toggle} ${(this.state.stylesLoaded) ? 'is--visible' : ''}`}
+          rootClass={`${styles.toggle} ${(stylesLoaded) ? 'is--visible' : ''}`}
           toggled={isOpen}
         >
           <i className="material-icons">view_comfy</i>
@@ -125,6 +135,7 @@ class Console extends Component {
 }
 
 Console.defaultProps = {
+  plugins: [],
   toggled: false,
 };
 Console.propTypes = {
@@ -133,3 +144,6 @@ Console.propTypes = {
 };
 
 export default Console;
+export {
+  globalStyles,
+};
