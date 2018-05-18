@@ -6,14 +6,20 @@ import styles from './styles';
 
 const formatTimestamp = (time) => {
   const d = new Date(+time);
-  const hour = d.getHours();
-  const strMonth = pad(d.getMonth());
-  const strDate = pad(d.getDate());
+
+  // use a specific timezone so there's a baseline, and so tests are more accurate
+  const pstOffset = 420; // d.getTimezoneOffset()
+  const timeOffsetInMS = pstOffset * 60000;
+  d.setTime(d.getTime() - timeOffsetInMS);
+
+  const hour = d.getUTCHours();
+  const strMonth = pad(d.getUTCMonth());
+  const strDate = pad(d.getUTCDate());
   const strHour = hour > 12 ? pad(hour - 12) : pad(hour);
-  const strMins = pad(d.getMinutes());
+  const strMins = pad(d.getUTCMinutes());
   const meridiem = hour >= 12 ? 'pm' : 'am';
 
-  return `${strMonth}/${strDate}/${d.getFullYear()} ${strHour}:${strMins}${meridiem}`;
+  return `${strMonth}/${strDate}/${d.getUTCFullYear()} ${strHour}:${strMins}${meridiem} PST`;
 };
 
 const MetaData = ({ data }) => {

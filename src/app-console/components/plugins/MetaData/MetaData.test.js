@@ -78,18 +78,18 @@ describe('MetaData', () => {
     wrapper = shallow(<MetaData {...props} />);
     const buildTime = shallow(wrapper.find(`.${styles.columnCell}`).get(1));
 
-    expect(buildTime.text()).toEqual('04/09/2018 07:55am');
+    expect(buildTime.text()).toEqual('04/09/2018 07:55am PST');
   });
 
   describe('formatTimestamp', () => {
 
     it('should account for strings and numbers', () => {
-      expect(formatTimestamp('1525877727373')).toEqual('04/09/2018 07:55am');
-      expect(formatTimestamp(1525877727373)).toEqual('04/09/2018 07:55am');
+      expect(formatTimestamp('1525877727373')).toEqual('04/09/2018 07:55am PST');
+      expect(formatTimestamp(1525877727373)).toEqual('04/09/2018 07:55am PST');
     });
 
     it('should account post-meridiem', () => {
-      expect(formatTimestamp('1525897727373')).toEqual('04/09/2018 01:28pm');
+      expect(formatTimestamp('1525897727373')).toEqual('04/09/2018 01:28pm PST');
     });
   });
 });
