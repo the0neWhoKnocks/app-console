@@ -12,10 +12,10 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      branches: 0,
-      functions: 0,
-      lines: 0,
-      statements: 0,
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100,
     },
   },
   roots: [
@@ -26,5 +26,7 @@ module.exports = {
   setupFiles: [
     './.jest/polyfills.js',
   ],
+  // so you don't get a SecurityError while testing `history`
+  testURL: 'http://localhost',
   verbose: true,
 };

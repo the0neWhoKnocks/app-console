@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { array } from 'prop-types';
+import { arrayOf, number, oneOfType, shape, string } from 'prop-types';
 import DataTree from '../../DataTree';
 import ConsolePluginError from '../../ConsolePluginError';
 import styles from './styles';
@@ -130,7 +130,19 @@ Providers.defaultProps = {
   providers: [],
 };
 Providers.propTypes = {
-  providers: array,
+  providers: arrayOf(shape({
+    duration: oneOfType([ // in milliseconds
+      number,
+      string,
+    ]),
+    name: string,
+    resp: shape({
+      status: number, // http status code
+    }),
+    req: shape({
+      url: string,
+    }),
+  })),
 };
 
 export default Providers;
