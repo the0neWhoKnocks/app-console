@@ -6,20 +6,22 @@ import styles from './styles';
 
 const updateQuery = ({ flags, setFlags }, ev) => {
   const el = ev.currentTarget;
-  const param = `${el.dataset.name}=${el.checked}`;
+  const flagName = el.dataset.name;
+  const isToggled = el.checked;
+  const param = `${flagName}=${isToggled}`;
   let params = (window.location.search)
     ? window.location.search.replace('?', '').split('&')
     : [];
 
-  params = params.filter((p) => p.indexOf(el.dataset.name));
+  params = params.filter((p) => p.indexOf(flagName));
   params.push(param);
 
-  const newURL = `${window.location.origin}${window.location.pathname}${(params.length ? '?' : '')}${params.join('&')}`;
+  const newURL = `${window.location.origin}${window.location.pathname}?${params.join('&')}`;
 
   window.history.replaceState('', '', newURL);
 
   setFlags(Object.assign({}, flags, {
-    [el.dataset.name]: el.checked,
+    [flagName]: isToggled,
   }));
 };
 
@@ -76,3 +78,6 @@ FeatureFlags.propTypes = {
 };
 
 export default FeatureFlags;
+export {
+  updateQuery,
+};

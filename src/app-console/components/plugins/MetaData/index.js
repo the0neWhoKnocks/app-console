@@ -1,8 +1,20 @@
 import React from 'react';
-import { array } from 'prop-types';
+import { arrayOf, shape, string } from 'prop-types';
 import ConsolePluginError from '../../ConsolePluginError';
 import pad from '../../../utils/pad';
 import styles from './styles';
+
+const formatTimestamp = (time) => {
+  const d = new Date(+time);
+  const hour = d.getHours();
+  const strMonth = pad(d.getMonth());
+  const strDate = pad(d.getDate());
+  const strHour = hour > 12 ? pad(hour - 12) : pad(hour);
+  const strMins = pad(d.getMinutes());
+  const meridiem = hour >= 12 ? 'pm' : 'am';
+
+  return `${strMonth}/${strDate}/${d.getFullYear()} ${strHour}:${strMins}${meridiem}`;
+};
 
 const MetaData = ({ data }) => {
   if(!data.length){
@@ -13,7 +25,8 @@ const MetaData = ({ data }) => {
     );
   }
 
-  const sortedData = data.sort((a, b) => a.name > b.name);
+  const scopedData = [...data]; // sort will mutate what's passed in
+  const sortedData = scopedData.sort((a, b) => a.name > b.name);
 
   return (
     <div className={`${styles.root}`}>
@@ -30,14 +43,7 @@ const MetaData = ({ data }) => {
             let attVal = att.value;
 
             if (att.name.toLowerCase() === 'build time') {
-              const d = new Date(+attVal);
-              const hour = d.getHours();
-              const strMonth = pad(d.getMonth());
-              const strDate = pad(d.getDate());
-              const strHour = hour > 12 ? pad(hour - 12) : pad(hour);
-              const strMins = pad(d.getMinutes());
-              const meridiem = hour >= 12 ? 'pm' : 'am';
-              attVal = `${strMonth}/${strDate}/${d.getFullYear()} ${strHour}:${strMins}${meridiem}`;
+              attVal = formatTimestamp(attVal);
             }
 
             return (
@@ -56,7 +62,13 @@ MetaData.defaultProps = {
   data: [],
 };
 MetaData.propTypes = {
-  data: array,
+  data: arrayOf(shape({
+    name: string,
+    value: string,
+  })),
 };
 
 export default MetaData;
+export {
+  formatTimestamp,
+};
