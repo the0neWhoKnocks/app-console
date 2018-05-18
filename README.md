@@ -1,5 +1,8 @@
 # App Console
 
+[![Build Status](https://travis-ci.org/the0neWhoKnocks/app-console.svg?branch=master)](https://travis-ci.org/the0neWhoKnocks/app-console)
+[![codecov](https://codecov.io/gh/the0neWhoKnocks/app-console/branch/master/graph/badge.svg)](https://codecov.io/gh/the0neWhoKnocks/app-console)
+
 A component used for development or support debugging.
 
 ---
