@@ -1,5 +1,8 @@
 import { css } from 'glamor';
 import {
+  mobile
+} from '../../../breakpoints';
+import {
   MODULE_BG_PRIMARY_COLOR,
   MODULE_BG_SECONDARY_COLOR,
   MODULE_FONT_PRIMARY_COLOR,
@@ -12,6 +15,10 @@ const styles = {
     columnCount: 2,
     padding: 0,
     margin: 0,
+    
+    [mobile]: {
+      columnCount: 1,
+    },
   }),
 
   li: css({
@@ -40,6 +47,12 @@ const styles = {
   }),
 
   flagToggle: css({
+    ' .toggle__content-wrapper': {
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+    },
+    
     ' .toggle__btn': {
       color: [
         MODULE_FONT_SECONDARY_COLOR,
