@@ -2,26 +2,52 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import setTransitionState from '../../utils/setTransitionState';
 import { transitionEnd } from '../../utils/prefixTransition';
+import DataTree from '../DataTree';
 import DataBranch from './index';
 import styles from './styles';
 
-jest.mock(
-  '../../utils/setTransitionState',
-  () => jest.genMockFromModule('../../utils/setTransitionState')
-);
+jest.mock('../../utils/setTransitionState');
+jest.mock('../DataTree');
 
 describe('DataBranch', () => {
   let wrapper;
   let instance;
 
+  beforeEach(() => {
+    DataTree.mockReturnValue(null);
+  });
+
   it('should set default state', () => {
     instance = mount(<DataBranch />).instance();
 
     expect(instance.state).toEqual({
+      branchData: null,
       heightClass: '',
-      styles: undefined,
+      childStyles: undefined,
       toggled: false,
     });
+  });
+
+  it('should display data if toggled by default', () => {
+    const branchProps = {
+      data: {
+        stuff: [],
+      },
+      parKey: 'someKey',
+      sort: true,
+      toggled: true,
+    };
+    instance = mount(<DataBranch { ...branchProps } />).instance();
+
+    expect(instance.state).toEqual(expect.objectContaining({
+      branchData: (
+        <DataTree
+          data={ branchProps.data }
+          par={ branchProps.parKey }
+          sort={ branchProps.sort }
+        />
+      ),
+    }));
   });
 
   describe('getExpandedHeight', () => {
@@ -52,30 +78,25 @@ describe('DataBranch', () => {
     });
   });
 
-  describe('handleToggle', () => {
-
+  describe('executeTransition', () => {
     it('should open & close the branch', () => {
       let instanceCTX;
       let transitionStateCB;
+      let checked;
+      let expandedHeight = 100;
       instance = mount(<DataBranch />).instance();
       instance.childrenEl = {
         addEventListener: jest.fn(),
-        classList: {
-          add: jest.fn(),
-          remove: jest.fn(),
-        },
-        offsetHeight: 30,
       };
-      instance.inputEl = {
-        checked: true,
-      };
+      checked = true;
+      instance.getExpandedHeight = jest.fn(() => expandedHeight);
       instance.handleTransitionEnd = jest.fn();
       setTransitionState.mockImplementation((ctx, state, cb) => {
         instanceCTX = ctx;
         if(cb) transitionStateCB = cb;
       });
 
-      instance.handleToggle();
+      instance.executeTransition(checked);
       transitionStateCB();
 
       expect(instance.childrenEl.addEventListener).toHaveBeenCalledWith(
@@ -86,38 +107,36 @@ describe('DataBranch', () => {
       expect(setTransitionState).toHaveBeenCalledWith(
         instanceCTX,
         {
-          heightClass: 'is--opening',
-          styles: {
-            height: `${instance.childrenEl.offsetHeight}px`,
+          childStyles: {
+            height: `${expandedHeight}px`,
           },
-          toggled: instance.inputEl.checked,
+          heightClass: 'is--opening',
+          toggled: checked,
         },
         transitionStateCB,
       );
 
       // close
-      instance.inputEl = {
-        checked: false,
-      };
+      checked = false;
 
-      instance.handleToggle();
+      instance.executeTransition(checked);
       transitionStateCB();
 
       expect(setTransitionState).toHaveBeenCalledWith(
         instanceCTX,
         {
-          heightClass: 'is--closing',
-          styles: {
-            height: `${instance.childrenEl.offsetHeight}px`,
+          childStyles: {
+            height: `${expandedHeight}px`,
           },
-          toggled: instance.inputEl.checked,
+          heightClass: 'is--closing',
+          toggled: checked,
         },
         transitionStateCB,
       );
       expect(setTransitionState).toHaveBeenCalledWith(
         instanceCTX,
         {
-          styles: {
+          childStyles: {
             height: '0px',
           },
         }
@@ -125,13 +144,59 @@ describe('DataBranch', () => {
     });
   });
 
+  describe('handleToggle', () => {
+    let checked;
+
+    beforeEach(() => {
+      wrapper = mount(<DataBranch />);
+      instance = wrapper.instance();
+      instance.executeTransition = jest.fn();
+    });
+
+    it('should load the data only after a user opened a data node', () => {
+      const treeProps = {
+        data: {
+          items: [],
+        },
+        parKey: 'someProp',
+        sort: true,
+      };
+      wrapper.setProps(treeProps);
+      checked = true;
+      instance.inputEl = { checked };
+
+      expect(instance.state.branchData).toBe(null);
+
+      instance.handleToggle();
+      wrapper.update();
+
+      expect(instance.executeTransition).toHaveBeenCalledWith(checked);
+      expect(instance.state.branchData).toEqual(
+        <DataTree data={ treeProps.data } par={ treeProps.parKey } sort={ treeProps.sort } />
+      );
+    });
+
+    it('should just close the data node', () => {
+      checked = false;
+      instance.inputEl = { checked };
+
+      expect(instance.state.branchData).toBe(null);
+
+      instance.handleToggle();
+      wrapper.update();
+
+      expect(instance.executeTransition).toHaveBeenCalledWith(checked);
+      expect(instance.state.branchData).toBe(null);
+    });
+  });
+
   describe('handleTransitionEnd', () => {
     let removeStub;
-    let instance;
 
     beforeEach(() => {
       removeStub = jest.fn();
-      instance = mount(<DataBranch />).instance();
+      wrapper = mount(<DataBranch />);
+      instance = wrapper.instance();
       instance.childrenEl = {
         removeEventListener: removeStub,
       };
@@ -146,30 +211,26 @@ describe('DataBranch', () => {
         instance.transitionCB
       );
       expect(instance.state).toEqual(expect.objectContaining({
-        heightClass: '',
-        styles: {
+        childStyles: {
           height: '',
         },
+        heightClass: '',
       }));
     });
 
-    it('should set the height to auto so child branches can open and close freely', (done) => {
-      instance.setState({
-        toggled: true,
-      }, () => {
-        instance.handleTransitionEnd();
+    it('should set the height to auto so child branches can open and close freely', () => {
+      wrapper.setState({ toggled: true });
+      wrapper.update();
 
-        process.nextTick(() => {
-          expect(instance.state).toEqual(expect.objectContaining({
-            heightClass: 'is--open',
-            styles: {
-              height: 'auto',
-            },
-          }));
+      instance.handleTransitionEnd();
+      wrapper.update();
 
-          done();
-        });
-      });
+      expect(instance.state).toEqual(expect.objectContaining({
+        childStyles: {
+          height: 'auto',
+        },
+        heightClass: 'is--open',
+      }));
     });
   });
 });
