@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { array, bool } from 'prop-types';
+import { arrayOf, bool, shape } from 'prop-types';
 import setTransitionState from '../../utils/setTransitionState';
 import Toggle from '../Toggle';
 import Slide from '../Slide';
@@ -9,7 +9,7 @@ const globalStyles = [
   {
     href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
     id: 'materialIcons',
-  }
+  },
 ];
 
 class Console extends Component {
@@ -34,10 +34,9 @@ class Console extends Component {
       styleTag.href = style.href;
       styleTag.rel = 'stylesheet';
 
-      if(!glamorStyles){
+      if (!glamorStyles) {
         document.head.appendChild(styleTag);
-      }
-      else{
+      } else {
         document.head.insertBefore(styleTag, glamorStyles);
       }
     });
@@ -88,7 +87,7 @@ class Console extends Component {
                     key={plugin.id}
                     id={plugin.id}
                     onToggle={this.handlePluginToggle}
-                    rootClass={`${styles.pluginToggle}`}
+                    rootClass={`${styles.toggle} ${styles.pluginToggle}`}
                     childStyle={{ animationDelay: `${ndx * 0.1}s` }}
                     style={{ animationDelay: `${ndx * 0.1}s` }}
                     toggled={activePlugin === plugin.id}
@@ -113,8 +112,8 @@ class Console extends Component {
                 key: activePlugin,
                 props: {
                   ...this.props,
-                  ...currPlugin.props
-                }
+                  ...currPlugin.props,
+                },
               }}
               ndx={pluginNdx}
               panelClass={`${styles.pluginPanel} ${currPlugin.panelClass}`}
@@ -124,7 +123,7 @@ class Console extends Component {
         <Toggle
           id="consoleToggle"
           onToggle={this.handleConsoleToggle}
-          rootClass={`${styles.toggle} ${(stylesLoaded) ? 'is--visible' : ''}`}
+          rootClass={`${styles.toggle} ${styles.consoleToggle}  ${(stylesLoaded) ? 'is--visible' : ''}`}
           toggled={isOpen}
         >
           <i className="material-icons">view_comfy</i>
@@ -139,7 +138,7 @@ Console.defaultProps = {
   toggled: false,
 };
 Console.propTypes = {
-  plugins: array,
+  plugins: arrayOf(shape({})),
   toggled: bool,
 };
 

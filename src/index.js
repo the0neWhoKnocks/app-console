@@ -1,17 +1,12 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import store from './store';
 import App from './App';
-import { Console } from './app-console';
-import consolePlugins from './consolePlugins';
 
 render(
   <Provider store={store}>
-    <Fragment>
-      <App />
-      <Console plugins={consolePlugins} />
-    </Fragment>
+    <App />
   </Provider>,
   document.getElementById('root')
 );

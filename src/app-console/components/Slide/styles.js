@@ -11,7 +11,7 @@ const animations = {
     '100%': {
       opacity: 1,
       transform: 'translate(0%, 0%)',
-    }
+    },
   }),
 
   fromLeft: css.keyframes('fromLeft', {
@@ -20,7 +20,7 @@ const animations = {
     },
     '100%': {
       transform: 'translateX(0%)',
-    }
+    },
   }),
 
   fromRight: css.keyframes('fromRight', {
@@ -29,7 +29,7 @@ const animations = {
     },
     '100%': {
       transform: 'translateX(0%)',
-    }
+    },
   }),
 
   fromCenterToLeft: css.keyframes('fromCenterToLeft', {
@@ -38,7 +38,7 @@ const animations = {
     },
     '100%': {
       transform: 'translateX(-100%)',
-    }
+    },
   }),
 
   fromCenterToRight: css.keyframes('fromCenterToRight', {
@@ -47,7 +47,7 @@ const animations = {
     },
     '100%': {
       transform: 'translateX(100%)',
-    }
+    },
   }),
 };
 

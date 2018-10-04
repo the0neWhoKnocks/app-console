@@ -1,5 +1,5 @@
 import React from 'react';
-import { bool, func, object, string } from 'prop-types';
+import { bool, func, node, shape, string } from 'prop-types';
 import styles from './styles';
 
 const Toggle = ({
@@ -16,7 +16,8 @@ const Toggle = ({
   const dynamicProps = {
     onChange: onToggle,
   };
-  if(!onToggle) dynamicProps.defaultChecked = toggled;
+  const toggledClass = (toggled) ? ' is--current' : '';
+  if (!onToggle) dynamicProps.defaultChecked = toggled;
   else dynamicProps.checked = toggled;
 
   return (
@@ -29,11 +30,15 @@ const Toggle = ({
         {...data}
       />
       <label
-        className={`${styles.label}`}
+        className={`toggle__btn ${styles.label} ${toggledClass}`}
         htmlFor={id}
         style={childStyle}
         title={title}
-      >{children}</label>
+      >
+        <div className="toggle__content-wrapper">
+          {children}
+        </div>
+      </label>
     </div>
   );
 };
@@ -43,10 +48,11 @@ Toggle.defaultProps = {
   toggled: false,
 };
 Toggle.propTypes = {
+  children: node,
   // CSS styles that are applied to the label wrapping the children
-  childStyle: object,
+  childStyle: shape({}),
   // An Object containing `data-` attributes
-  data: object,
+  data: shape({}),
   // A unique ID for the toggle
   id: string.isRequired,
   // A handler for when it's toggled on or off
@@ -54,7 +60,7 @@ Toggle.propTypes = {
   // A CSS class for the toggle
   rootClass: string,
   // CSS styles that are applied to the toggle
-  style: object,
+  style: shape({}),
   // A title for the label, so text is displayed on hover
   title: string,
   // Whether or not the toggle is active

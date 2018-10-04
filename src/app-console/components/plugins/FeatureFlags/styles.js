@@ -1,20 +1,22 @@
 import { css } from 'glamor';
+import {
+  MODULE_BG_PRIMARY_COLOR,
+  MODULE_BG_SECONDARY_COLOR,
+  MODULE_FONT_PRIMARY_COLOR,
+  MODULE_FONT_SECONDARY_COLOR,
+} from '../../Console/styles';
 
 const styles = {
   root: css({
     width: '100%',
+    columnCount: 2,
     padding: 0,
     margin: 0,
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignContent: 'start',
   }),
 
   li: css({
     listStyle: 'none',
     margin: '0em 0.25em 0.5em 0.25em',
-    flexGrow: 1,
-    flexBasis: '24%',
   }),
 
   icon: css({
@@ -38,19 +40,38 @@ const styles = {
   }),
 
   flagToggle: css({
-    ' label': {
-      color: 'var(--console-module-font-secondary-color)',
+    ' .toggle__btn': {
+      color: [
+        MODULE_FONT_SECONDARY_COLOR,
+        'var(--console-module-font-secondary-color)',
+      ],
+      textTransform: 'none',
       whiteSpace: 'nowrap',
-      borderColor: 'var(--console-module-bg-primary-color)',
-      background: 'var(--console-module-bg-primary-color)',
+      borderColor: [
+        MODULE_BG_PRIMARY_COLOR,
+        'var(--console-module-bg-primary-color)',
+      ],
+      background: [
+        MODULE_BG_PRIMARY_COLOR,
+        'var(--console-module-bg-primary-color)',
+      ],
       display: 'block',
     },
 
-    ' input:checked + label': {
-      color: 'var(--console-module-font-primary-color)',
-      borderColor: 'var(--console-module-bg-secondary-color)',
-      background: 'var(--console-module-bg-secondary-color)',
-    }
+    ' input:checked + .toggle__btn': {
+      color: [
+        MODULE_FONT_PRIMARY_COLOR,
+        'var(--console-module-font-primary-color)',
+      ],
+      borderColor: [
+        MODULE_BG_SECONDARY_COLOR,
+        'var(--console-module-bg-secondary-color)',
+      ],
+      background: [
+        MODULE_BG_SECONDARY_COLOR,
+        'var(--console-module-bg-secondary-color)',
+      ],
+    },
   }),
 };
 

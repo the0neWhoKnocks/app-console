@@ -1,5 +1,5 @@
 import React from 'react';
-import { func, object } from 'prop-types';
+import { func, shape } from 'prop-types';
 import ConsolePluginError from '../../ConsolePluginError';
 import Toggle from '../../Toggle';
 import styles from './styles';
@@ -8,12 +8,13 @@ const updateQuery = ({ flags, setFlags }, ev) => {
   const el = ev.currentTarget;
   const flagName = el.dataset.name;
   const isToggled = el.checked;
-  const param = `${flagName}=${isToggled}`;
+  const paramName = `flags.${flagName}`;
+  const param = `${paramName}=${isToggled || ''}`;
   let params = (window.location.search)
     ? window.location.search.replace('?', '').split('&')
     : [];
 
-  params = params.filter((p) => p.indexOf(flagName));
+  params = params.filter(p => !p.includes(paramName));
   params.push(param);
 
   const newURL = `${window.location.origin}${window.location.pathname}?${params.join('&')}`;
@@ -26,7 +27,7 @@ const updateQuery = ({ flags, setFlags }, ev) => {
 };
 
 const FeatureFlags = ({ flags, setFlags }) => {
-  if(!Object.keys(flags).length){
+  if (!Object.keys(flags).length) {
     return (
       <ConsolePluginError>
         No <code>flags</code> data was provided.
@@ -39,9 +40,13 @@ const FeatureFlags = ({ flags, setFlags }) => {
   return (
     <ul className={`${styles.root}`}>
       {Object.keys(flags)
-        .sort((a, b) => a > b)
+        .sort((a, b) => {
+          if (a < b) return -1;
+          else if (a > b) return 1;
+          return 0;
+        })
         .map((flag) => {
-          const enabled = flags[flag];
+          const enabled = !!flags[flag];
           const icon = (enabled) ? 'check_circle' : 'cancel';
           const enabledClass = (enabled) ? 'is--enabled' : 'is--disabled';
           return (
@@ -72,7 +77,7 @@ FeatureFlags.defaultProps = {
 };
 FeatureFlags.propTypes = {
   // The feature flags
-  flags: object,
+  flags: shape({}),
   // A handler that changes the state of a feature flag
   setFlags: func,
 };

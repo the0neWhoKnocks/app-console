@@ -18,6 +18,7 @@ const styles = {
 
   li: css({
     margin: '0.25em 0',
+    overflowX: 'auto',
     position: 'relative',
 
     ':not(.is--parent)': {
@@ -35,7 +36,7 @@ const styles = {
   }),
 
   isBool: css({
-    color: '#ff9898',
+    color: '#5c9aff',
   }),
 
   isStr: css({
@@ -44,6 +45,14 @@ const styles = {
 
   isNum: css({
     color: '#ff62f0',
+  }),
+
+  isNull: css({
+    color: '#ec85bd',
+  }),
+
+  isFunc: css({
+    color: '#8e8e8e',
   }),
 };
 
