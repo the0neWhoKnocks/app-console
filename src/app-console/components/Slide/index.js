@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
-import { func, number, object, oneOfType, shape, string } from 'prop-types';
+import { string } from 'prop-types';
 import styles from './styles';
 
 class Slide extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      items: [],
-      ndx: undefined,
-      prevNdx: undefined,
-    };
-  }
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.component && +nextProps.ndx !== +prevState.ndx) {
       const newState = {
@@ -31,8 +22,27 @@ class Slide extends Component {
     return null;
   }
 
-  render() {
+  constructor() {
+    super();
 
+    this.state = {
+      /**
+       * The items in the Slide
+       *
+       * @type {Array.<{Component: Function, key: String, props: Object}>}
+       */
+      items: [],
+      /**
+       * The current Slide index
+       *
+       * @type {Number|String}
+       */
+      ndx: undefined,
+      prevNdx: undefined,
+    };
+  }
+
+  render() {
     return (
       <div className={`${styles.container} ${this.props.className}`}>
         {this.state.items.map((item, ndx) => {
@@ -41,8 +51,8 @@ class Slide extends Component {
           // first item will always slide from bottom
           if (this.state.prevNdx === undefined && ndx === this.state.ndx) {
             panelClass = styles.slideFromBottom;
-          }
-          // figure out the directions items need to slide if there are more than one
+          } // eslint-disable-line brace-style
+          // figure out the directions that items need to slide if there are more than one
           else {
             if (ndx === this.state.ndx) {
               if (ndx > this.state.prevNdx) panelClass = styles.slideFromRight;
@@ -68,15 +78,6 @@ class Slide extends Component {
 
 Slide.propTypes = {
   className: string,
-  component: shape({
-    Component: func,
-    key: string,
-    props: object,
-  }),
-  ndx: oneOfType([
-    number,
-    string,
-  ]),
   panelClass: string,
 };
 

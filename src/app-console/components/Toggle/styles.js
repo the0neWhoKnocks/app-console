@@ -1,4 +1,8 @@
 import { css } from 'glamor';
+import {
+  PLUGIN_BTN_COLOR,
+  PLUGIN_BTN_TOGGLED_COLOR,
+} from '../Console/styles';
 
 const styles = {
   input: css({
@@ -7,17 +11,29 @@ const styles = {
     opacity: 0,
 
     ':checked + label': {
-      color: 'var(--console-plugin-btn-color)',
-      background: 'var(--console-plugin-btn-toggled-color)',
-    }
+      color: [
+        PLUGIN_BTN_COLOR,
+        'var(--console-plugin-btn-color)',
+      ],
+      background: [
+        PLUGIN_BTN_TOGGLED_COLOR,
+        'var(--console-plugin-btn-toggled-color)',
+      ],
+    },
   }),
 
   label: css({
     textTransform: 'uppercase',
     padding: '1em',
-    border: 'solid 0.2em var(--console-plugin-btn-color)',
+    border: [
+      `solid 0.2em ${PLUGIN_BTN_COLOR}`,
+      'solid 0.2em var(--console-plugin-btn-color)',
+    ],
     borderRadius: '1em',
-    background: 'var(--console-plugin-btn-color)',
+    background: [
+      PLUGIN_BTN_COLOR,
+      'var(--console-plugin-btn-color)',
+    ],
     verticalAlign: 'middle',
     cursor: 'pointer',
     display: 'inline-block',
@@ -27,7 +43,7 @@ const styles = {
     '*': {
       pointerEvents: 'none',
     },
-  })
+  }),
 };
 
 export default styles;

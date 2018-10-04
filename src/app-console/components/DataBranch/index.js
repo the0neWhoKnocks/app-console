@@ -1,17 +1,28 @@
 import React, { Component, Fragment } from 'react';
-import { object, string } from 'prop-types';
+import { array, bool, oneOfType, shape, string } from 'prop-types';
 import { transitionEnd } from '../../utils/prefixTransition';
 import setTransitionState from '../../utils/setTransitionState';
+import DataTree from '../DataTree';
 import styles from './styles';
 
 class DataBranch extends Component {
   constructor(props) {
+    const {
+      data,
+      parKey,
+      sort,
+      toggled,
+    } = props;
+
     super();
 
     this.state = {
+      branchData: (toggled)
+        ? <DataTree data={data} par={parKey} sort={sort} />
+        : null,
+      childStyles: undefined,
       heightClass: '',
-      styles: undefined,
-      toggled: props.toggled || false,
+      toggled: toggled || false,
     };
 
     this.handleToggle = this.handleToggle.bind(this);
@@ -26,26 +37,18 @@ class DataBranch extends Component {
    *
    * @return {Number}
    */
-  getExpandedHeight(){
-    let height;
-
+  getExpandedHeight() {
     this.childrenEl.classList.add(`${styles.autoHeight}`);
-    height = this.childrenEl.offsetHeight;
+    const height = this.childrenEl.offsetHeight;
     this.childrenEl.classList.remove(`${styles.autoHeight}`);
 
     return height;
   }
 
-  /**
-   * Handles the toggling of a branch.
-   *
-   * @param {Event} ev - Click
-   */
-  handleToggle(ev) {
-    const checked = this.inputEl.checked;
+  executeTransition(checked) {
     const newState = {
       heightClass: (checked) ? 'is--opening' : 'is--closing',
-      styles: {
+      childStyles: {
         height: `${this.getExpandedHeight()}px`,
       },
       toggled: checked,
@@ -67,12 +70,34 @@ class DataBranch extends Component {
          * height to a pixel value of zero so that the CSS transition kicks in.
          */
         setTransitionState(this, {
-          styles: {
+          childStyles: {
             height: '0px',
-          }
+          },
         });
       }
     });
+  }
+
+  /**
+   * Handles the toggling of a branch.
+   */
+  handleToggle() {
+    const {
+      data,
+      parKey,
+      sort,
+    } = this.props;
+    const checked = this.inputEl.checked;
+
+    if (checked) {
+      this.setState({
+        branchData: <DataTree data={data} par={parKey} sort={sort} />,
+      }, () => {
+        this.executeTransition(checked);
+      });
+    } else {
+      this.executeTransition(checked);
+    }
   }
 
   /**
@@ -84,7 +109,7 @@ class DataBranch extends Component {
     this.childrenEl.removeEventListener(transitionEnd, this.transitionCB);
     this.setState({
       heightClass: (this.state.toggled) ? 'is--open' : '',
-      styles: {
+      childStyles: {
         height: (this.state.toggled) ? 'auto' : '',
       },
     });
@@ -92,30 +117,36 @@ class DataBranch extends Component {
 
   render() {
     const {
-      branchData,
       inputID,
       labelClass,
       labelText,
     } = this.props;
+    const {
+      branchData,
+      childStyles,
+      heightClass,
+      toggled,
+    } = this.state;
+    const uid = `branch_${inputID}`;
 
     return (
       <Fragment>
         <input
           className={`${styles.input}`}
           type="checkbox"
-          id={inputID}
-          checked={this.state.toggled}
+          id={uid}
+          checked={toggled}
           onChange={this.handleToggle}
-          ref={(input) => {this.inputEl = input}}
+          ref={(input) => { this.inputEl = input; }}
         />
         <label
           className={`${styles.label} ${labelClass}`}
-          htmlFor={inputID}
+          htmlFor={uid}
         >{labelText}</label>
         <div
-          className={`${styles.children} ${this.state.heightClass}`}
-          style={this.state.styles}
-          ref={(children) => {this.childrenEl = children}}
+          className={`${styles.children} ${heightClass}`}
+          style={childStyles}
+          ref={(children) => { this.childrenEl = children; }}
         >{branchData}</div>
       </Fragment>
     );
@@ -123,10 +154,16 @@ class DataBranch extends Component {
 }
 
 DataBranch.propTypes = {
-  branchData: object,
+  data: oneOfType([
+    shape({}),
+    array,
+  ]),
   inputID: string,
   labelClass: string,
   labelText: string,
+  parKey: string,
+  sort: bool,
+  toggled: bool,
 };
 
 export default DataBranch;

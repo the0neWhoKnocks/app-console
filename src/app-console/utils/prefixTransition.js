@@ -3,15 +3,16 @@ const endPrefixes = {
   MozTransition: 'transitionend',
   MSTransition: 'msTransitionEnd',
   OTransition: 'oTransitionEnd',
-  transition: 'transitionend'
+  transition: 'transitionend',
 };
 
 const getTransition = (prefixes) => {
   const el = document.createElement('div');
   let prefix;
 
-  for(let t in prefixes){
-    if(el.style[t] !== undefined){
+  // eslint-disable-next-line no-restricted-syntax
+  for (const t in prefixes) {
+    if (el.style[t] !== undefined) {
       prefix = prefixes[t];
       break;
     }

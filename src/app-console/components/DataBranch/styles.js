@@ -19,7 +19,7 @@ const styles = {
 
     ':checked + label + div:not(.is--opening):not(.is--open):not(.is--closing)': {
       height: 'auto',
-    }
+    },
   }),
 
   label: css({

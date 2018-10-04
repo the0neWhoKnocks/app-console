@@ -3,13 +3,15 @@ import { array, object, oneOfType } from 'prop-types';
 import ConsolePluginError from '../../ConsolePluginError';
 import DataTree from '../../DataTree';
 
-const AppStore = ({ data }) => (!data)
-  ? (
+const AppStore = ({ data }) => {
+  return (!data)
+    ? (
       <ConsolePluginError>
         No store <code>data</code> was provided.
       </ConsolePluginError>
     )
-  : <DataTree data={data} />;
+    : <DataTree data={data} />;
+};
 
 AppStore.propTypes = {
   data: oneOfType([
