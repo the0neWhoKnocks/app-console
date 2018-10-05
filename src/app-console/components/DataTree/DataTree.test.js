@@ -51,7 +51,6 @@ describe('DataTree', () => {
 
   it('should have children expanded if they only have one level', () => {
     data = {
-      str: 'hi',
       zis: {
         is: {
           a: {
@@ -67,7 +66,7 @@ describe('DataTree', () => {
     wrapper = mount(<DataTree data={data} />);
     items = wrapper.find('DataBranch');
 
-    expect(items.get(0).props.toggled).toBe(false);
+    expect(items.get(0).props.toggled).toBe(true);
     expect(items.get(1).props.toggled).toBe(true);
     expect(items.get(2).props.toggled).toBe(true);
     expect(items.get(3).props.toggled).toBe(true);
@@ -77,6 +76,7 @@ describe('DataTree', () => {
   it('should apply proper prop-type CSS classes', () => {
     data = {
       bool: true,
+      func: () => {},
       num: 1337,
       str: 'hello world',
     };
@@ -85,9 +85,40 @@ describe('DataTree', () => {
 
     expect(items.get(0).key).toBe('bool');
     expect(items.get(0).props.children[1].props.children[2].props.className).toBe(`${styles.isBool}`);
-    expect(items.get(1).key).toBe('num');
-    expect(items.get(1).props.children[1].props.children[2].props.className).toBe(`${styles.isNum}`);
-    expect(items.get(2).key).toBe('str');
-    expect(items.get(2).props.children[1].props.children[2].props.className).toBe(`${styles.isStr}`);
+    expect(items.get(1).key).toBe('func');
+    expect(items.get(1).props.children[1].props.children[2].props.className).toBe(`${styles.isFunc}`);
+    expect(items.get(2).key).toBe('num');
+    expect(items.get(2).props.children[1].props.children[2].props.className).toBe(`${styles.isNum}`);
+    expect(items.get(3).key).toBe('str');
+    expect(items.get(3).props.children[1].props.children[2].props.className).toBe(`${styles.isStr}`);
+  });
+
+  it('should account for empty prop types', () => {
+    data = {
+      emptyArray: [],
+      emptyObject: {},
+      isANull: null,
+    };
+    wrapper = shallow(<DataTree data={data} />);
+    items = wrapper.find('li');
+
+    expect(items.get(0).key).toBe('emptyArray');
+    expect(items.get(0).props.children[1].props.children[2].props.children).toBe('[ ]');
+    expect(items.get(1).key).toBe('emptyObject');
+    expect(items.get(1).props.children[1].props.children[2].props.children).toBe('{ }');
+    expect(items.get(2).key).toBe('isANull');
+    expect(items.get(2).props.children[1].props.children[2].props.children).toBe('null');
+  });
+
+  it('should allow for props with same names but different letter-casing', () => {
+    data = {
+      Prop: [],
+      prop: {},
+    };
+    wrapper = shallow(<DataTree data={data} />);
+    items = wrapper.find('li');
+
+    expect(items.get(0).key).toBe('Prop');
+    expect(items.get(1).key).toBe('prop');
   });
 });

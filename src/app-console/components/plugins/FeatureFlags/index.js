@@ -4,11 +4,13 @@ import ConsolePluginError from '../../ConsolePluginError';
 import Toggle from '../../Toggle';
 import styles from './styles';
 
+export const QUERY_PREFIX = 'flags.';
+
 const updateQuery = ({ flags, setFlags }, ev) => {
   const el = ev.currentTarget;
   const flagName = el.dataset.name;
   const isToggled = el.checked;
-  const paramName = `flags.${flagName}`;
+  const paramName = `${QUERY_PREFIX}${flagName}`;
   const param = `${paramName}=${isToggled || ''}`;
   let params = (window.location.search)
     ? window.location.search.replace('?', '').split('&')
@@ -40,11 +42,7 @@ const FeatureFlags = ({ flags, setFlags }) => {
   return (
     <ul className={`${styles.root}`}>
       {Object.keys(flags)
-        .sort((a, b) => {
-          if (a < b) return -1;
-          else if (a > b) return 1;
-          return 0;
-        })
+        .sort((a, b) => (a < b) ? -1 : 1)
         .map((flag) => {
           const enabled = !!flags[flag];
           const icon = (enabled) ? 'check_circle' : 'cancel';

@@ -1,6 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FeatureFlags, { updateQuery } from './index';
+import FeatureFlags, {
+  QUERY_PREFIX,
+  updateQuery,
+} from './index';
 import styles from './styles';
 
 describe('FeatureFlags', () => {
@@ -117,6 +120,8 @@ describe('FeatureFlags', () => {
     });
 
     it('should change the state of a flag and update the query param', () => {
+      const paramName = `${ QUERY_PREFIX }${ flagNames[0] }`;
+
       expect(window.location.search).toEqual('');
 
       ev.currentTarget.checked = false;
@@ -125,25 +130,26 @@ describe('FeatureFlags', () => {
       expect(setFlags).toHaveBeenCalledWith(expect.objectContaining({
         [flagNames[0]]: false,
       }));
-      expect(window.location.search).toEqual('?flag1=false');
+      expect(window.location.search).toEqual(`?${ paramName }=`);
 
       ev.currentTarget.checked = true;
       updateQuery(opts, ev);
 
-      expect(window.location.search).toEqual('?flag1=true');
+      expect(window.location.search).toEqual(`?${ paramName }=true`);
     });
 
     it('should account for multiple query params', () => {
       const param = 'fu=bar';
-      window.history.replaceState('', '', `${window.location.origin}${window.location.pathname}?flag1=true&${param}`);
+      const paramName = `${ QUERY_PREFIX }${ flagNames[0] }`;
+      window.history.replaceState('', '', `${window.location.origin}${window.location.pathname}?${paramName}=true&${param}`);
 
       ev.currentTarget.checked = false;
       updateQuery(opts, ev);
-      expect(window.location.search).toEqual(`?${param}&flag1=false`);
+      expect(window.location.search).toEqual(`?${param}&${ paramName }=`);
 
       ev.currentTarget.checked = true;
       updateQuery(opts, ev);
-      expect(window.location.search).toEqual(`?${param}&flag1=true`);
+      expect(window.location.search).toEqual(`?${param}&${ paramName }=true`);
     });
   });
 });
