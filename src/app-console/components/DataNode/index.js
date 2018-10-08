@@ -3,7 +3,7 @@ import { array, bool, object, oneOfType, string } from 'prop-types';
 import DataBranch from '../DataBranch';
 import styles from './styles';
 
-const DataTree = ({
+const DataNode = ({
   data,
   par,
   sort,
@@ -93,7 +93,7 @@ const DataTree = ({
   return <ul className={(!par) ? `${styles.root}` : `${styles.ul}`} key={par}>{children}</ul>;
 };
 
-DataTree.propTypes = {
+DataNode.propTypes = {
   data: oneOfType([
     array,
     object,
@@ -101,9 +101,9 @@ DataTree.propTypes = {
   par: string,
   sort: bool,
 };
-DataTree.defaultProps = {
+DataNode.defaultProps = {
   data: {},
   sort: true,
 };
 
-export default DataTree;
+export default DataNode;

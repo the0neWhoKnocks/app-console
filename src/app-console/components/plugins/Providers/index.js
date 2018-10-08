@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { arrayOf, number, oneOfType, shape, string } from 'prop-types';
-import DataTree from '../../DataTree';
+import DataNode from '../../DataNode';
 import ConsolePluginError from '../../ConsolePluginError';
 import styles from './styles';
 
@@ -116,7 +116,7 @@ class Providers extends Component {
             className={`${styles.closeRegion}`}
             onClick={this.handleModalClose}
           ></button>
-          {this.state.modalData && <DataTree data={this.state.modalData} sort={false} />}
+          {this.state.modalData && <DataNode data={this.state.modalData} sort={false} />}
           <div className={`${styles.fakeCloseBtn}`}>
             <i className="material-icons">clear</i>
           </div>

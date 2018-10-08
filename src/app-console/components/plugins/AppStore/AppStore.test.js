@@ -9,7 +9,7 @@ describe('AppStore', () => {
     wrapper = shallow(<AppStore />);
 
     expect(wrapper.find('ConsolePluginError').length).toBe(1);
-    expect(wrapper.find('DataTree').length).toBe(0);
+    expect(wrapper.find('DataNode').length).toBe(0);
   });
 
   it('should display the data that was passed in', () => {
@@ -19,6 +19,6 @@ describe('AppStore', () => {
     wrapper = shallow(<AppStore data={data} />);
 
     expect(wrapper.find('ConsolePluginError').length).toBe(0);
-    expect(wrapper.find('DataTree').length).toBe(1);
+    expect(wrapper.find('DataNode').length).toBe(1);
   });
 });

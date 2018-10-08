@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import DataTree from './index';
+import DataNode from './index';
 import styles from './styles';
 
-describe('DataTree', () => {
+describe('DataNode', () => {
   let data;
   let items;
   let wrapper;
@@ -13,7 +13,7 @@ describe('DataTree', () => {
       z: 'end val',
       a: 'start val',
     };
-    wrapper = shallow(<DataTree data={data} />);
+    wrapper = shallow(<DataNode data={data} />);
     items = wrapper.find('li');
 
     expect(items.length).toBe(Object.keys(data).length);
@@ -26,7 +26,7 @@ describe('DataTree', () => {
       z: 'end val',
       a: 'start val',
     };
-    wrapper = shallow(<DataTree data={data} sort={false} />);
+    wrapper = shallow(<DataNode data={data} sort={false} />);
     items = wrapper.find('li');
 
     expect(items.length).toBe(Object.keys(data).length);
@@ -42,7 +42,7 @@ describe('DataTree', () => {
         },
       },
     };
-    wrapper = mount(<DataTree data={data} />);
+    wrapper = mount(<DataNode data={data} />);
     items = wrapper.find('DataBranch');
 
     expect(items.get(0).props.inputID).toBe('fu');
@@ -63,7 +63,7 @@ describe('DataTree', () => {
         },
       },
     };
-    wrapper = mount(<DataTree data={data} />);
+    wrapper = mount(<DataNode data={data} />);
     items = wrapper.find('DataBranch');
 
     expect(items.get(0).props.toggled).toBe(true);
@@ -80,7 +80,7 @@ describe('DataTree', () => {
       num: 1337,
       str: 'hello world',
     };
-    wrapper = shallow(<DataTree data={data} />);
+    wrapper = shallow(<DataNode data={data} />);
     items = wrapper.find('li');
 
     expect(items.get(0).key).toBe('bool');
@@ -99,7 +99,7 @@ describe('DataTree', () => {
       emptyObject: {},
       isANull: null,
     };
-    wrapper = shallow(<DataTree data={data} />);
+    wrapper = shallow(<DataNode data={data} />);
     items = wrapper.find('li');
 
     expect(items.get(0).key).toBe('emptyArray');
@@ -115,7 +115,7 @@ describe('DataTree', () => {
       Prop: [],
       prop: {},
     };
-    wrapper = shallow(<DataTree data={data} />);
+    wrapper = shallow(<DataNode data={data} />);
     items = wrapper.find('li');
 
     expect(items.get(0).key).toBe('Prop');

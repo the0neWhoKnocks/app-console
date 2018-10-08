@@ -77,28 +77,28 @@ describe('Providers', () => {
   const verifyModalData = (elNdx, data) => {
     wrapper = shallow(<Providers {...props} />);
     const reqBtn = shallow(wrapper.find('tr td button').get(elNdx));
-    let dataTree = wrapper.find('DataTree');
+    let dataNode = wrapper.find('DataNode');
     let closeRegion;
 
-    expect(dataTree.length).toBe(0);
+    expect(dataNode.length).toBe(0);
 
     // opens the modal
     reqBtn.simulate('click', ev);
     wrapper.update();
-    dataTree = wrapper.find('DataTree');
+    dataNode = wrapper.find('DataNode');
     closeRegion = wrapper.find(`button.${styles.closeRegion}`);
 
     expect(wrapper.find(`.${styles.modal}.is--open`).length).toBe(1);
-    expect(dataTree.length).toBe(1);
-    expect(dataTree.props().data).toEqual(data);
+    expect(dataNode.length).toBe(1);
+    expect(dataNode.props().data).toEqual(data);
 
     // closes the modal
     closeRegion.simulate('click');
     wrapper.update();
-    dataTree = wrapper.find('DataTree');
+    dataNode = wrapper.find('DataNode');
 
     expect(wrapper.find(`.${styles.modal}.is--open`).length).toBe(0);
-    expect(dataTree.length).toBe(0);
+    expect(dataNode.length).toBe(0);
   };
 
   const verifyVisibleEls = (visible, hidden, props = {}) => {
