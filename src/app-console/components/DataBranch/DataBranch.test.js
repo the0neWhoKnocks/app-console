@@ -2,19 +2,19 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import setTransitionState from '../../utils/setTransitionState';
 import { transitionEnd } from '../../utils/prefixTransition';
-import DataTree from '../DataTree';
+import DataNode from '../DataNode';
 import DataBranch from './index';
 import styles from './styles';
 
 jest.mock('../../utils/setTransitionState');
-jest.mock('../DataTree');
+jest.mock('../DataNode');
 
 describe('DataBranch', () => {
   let wrapper;
   let instance;
 
   beforeEach(() => {
-    DataTree.mockReturnValue(null);
+    DataNode.mockReturnValue(null);
   });
 
   it('should set default state', () => {
@@ -41,7 +41,7 @@ describe('DataBranch', () => {
 
     expect(instance.state).toEqual(expect.objectContaining({
       branchData: (
-        <DataTree
+        <DataNode
           data={ branchProps.data }
           par={ branchProps.parKey }
           sort={ branchProps.sort }
@@ -172,7 +172,7 @@ describe('DataBranch', () => {
 
       expect(instance.executeTransition).toHaveBeenCalledWith(checked);
       expect(instance.state.branchData).toEqual(
-        <DataTree data={ treeProps.data } par={ treeProps.parKey } sort={ treeProps.sort } />
+        <DataNode data={ treeProps.data } par={ treeProps.parKey } sort={ treeProps.sort } />
       );
     });
 

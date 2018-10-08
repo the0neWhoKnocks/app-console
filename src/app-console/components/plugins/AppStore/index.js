@@ -1,7 +1,7 @@
 import React from 'react';
 import { array, object, oneOfType } from 'prop-types';
 import ConsolePluginError from '../../ConsolePluginError';
-import DataTree from '../../DataTree';
+import DataNode from '../../DataNode';
 
 const AppStore = ({ data }) => {
   return (!data)
@@ -10,7 +10,7 @@ const AppStore = ({ data }) => {
         No store <code>data</code> was provided.
       </ConsolePluginError>
     )
-    : <DataTree data={data} />;
+    : <DataNode data={data} />;
 };
 
 AppStore.propTypes = {

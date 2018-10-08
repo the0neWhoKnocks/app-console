@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { array, bool, oneOfType, shape, string } from 'prop-types';
 import { transitionEnd } from '../../utils/prefixTransition';
 import setTransitionState from '../../utils/setTransitionState';
-import DataTree from '../DataTree';
+import DataNode from '../DataNode';
 import styles from './styles';
 
 class DataBranch extends Component {
@@ -18,7 +18,7 @@ class DataBranch extends Component {
 
     this.state = {
       branchData: (toggled)
-        ? <DataTree data={data} par={parKey} sort={sort} />
+        ? <DataNode data={data} par={parKey} sort={sort} />
         : null,
       childStyles: undefined,
       heightClass: '',
@@ -91,7 +91,7 @@ class DataBranch extends Component {
 
     if (checked) {
       this.setState({
-        branchData: <DataTree data={data} par={parKey} sort={sort} />,
+        branchData: <DataNode data={data} par={parKey} sort={sort} />,
       }, () => {
         this.executeTransition(checked);
       });
