@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { arrayOf, bool, shape } from 'prop-types';
+import { arrayOf, bool, func, number, shape } from 'prop-types';
 import setTransitionState from '../../utils/setTransitionState';
 import Toggle from '../Toggle';
 import Slide from '../Slide';
-import styles from './styles';
+import styles, {
+  REVEAL_SPEED,
+} from './styles';
 
 const globalStyles = [
   {
@@ -46,21 +48,48 @@ class Console extends Component {
       stylesLoaded: true,
     });
   }
+  
+  loadFirstPlugin() {
+    const {
+      defaultPluginNdx,
+      plugins,
+    } = this.props;
+    const {
+      isOpen,
+      pluginNdx,
+    } = this.state;
+    
+    if(isOpen){
+      setTimeout(() => {
+        const ndx = pluginNdx || defaultPluginNdx || 0;
+        const plugin = plugins[ndx];
+        
+        this.handlePluginToggle({
+          currentTarget: {
+            id: plugin.id,
+            dataset: { ndx },
+          },
+        });
+      }, REVEAL_SPEED);
+    }
+  }
 
   handleConsoleToggle(ev) {
     this.setState({
       activePlugin: undefined,
       isOpen: ev.currentTarget.checked,
-      pluginNdx: undefined,
-    });
+    }, this.loadFirstPlugin);
   }
 
   handlePluginToggle(ev) {
     const toggle = ev.currentTarget;
+    const { onPluginLoad } = this.props;
 
     this.setState({
       activePlugin: toggle.id,
       pluginNdx: toggle.dataset.ndx,
+    }, () => {
+      if(onPluginLoad) onPluginLoad(this.state.pluginNdx);
     });
   }
 
@@ -138,6 +167,8 @@ Console.defaultProps = {
   toggled: false,
 };
 Console.propTypes = {
+  defaultPluginNdx: number,
+  onPluginLoad: func,
   plugins: arrayOf(shape({})),
   toggled: bool,
 };

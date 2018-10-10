@@ -1,5 +1,6 @@
 {
   "plugins": [
+    "dynamic-import-node",
     "syntax-object-rest-spread"
   ],
   "presets": [

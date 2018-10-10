@@ -10,6 +10,7 @@ export const MODULE_FONT_PRIMARY_COLOR = '#a5edff';
 export const MODULE_FONT_SECONDARY_COLOR = '#446279';
 export const MODULE_BG_PRIMARY_COLOR = '#00182754';
 export const MODULE_BG_SECONDARY_COLOR = '#81d4ff26';
+export const REVEAL_SPEED = 300;
 
 css.insert(`
   :root {
@@ -61,7 +62,7 @@ const animations = {
   }),
 };
 
-const revealSpeed = '300ms';
+const revealSpeed = `${REVEAL_SPEED}ms`;
 const fontReset = '16px Helvetica, Arial, sans-serif';
 
 const styles = {

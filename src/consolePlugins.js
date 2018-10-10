@@ -2,6 +2,10 @@ import { css } from 'glamor';
 import { connect } from 'react-redux';
 import { actions } from './store';
 
+export const SCROLLABLE_PANEL = css({
+  overflowY: 'auto',
+});
+
 const plugins = ({
   appConsole,
   store,
@@ -13,9 +17,6 @@ const plugins = ({
     Providers,
     consolePlugin,
   } = appConsole;
-  const scrollablePanel = css({
-    overflowY: 'auto',
-  });
   
   return [
     consolePlugin({
@@ -23,7 +24,7 @@ const plugins = ({
       icon: 'layers',
       id: 'storeConsolePlugin',
       name: 'Store',
-      panelClass: `${scrollablePanel}`,
+      panelClass: `${SCROLLABLE_PANEL}`,
       props: {
         data: store.getState(),
       },
@@ -53,6 +54,7 @@ const plugins = ({
       icon: 'book',
       id: 'flagsConsolePlugin',
       name: 'Flags',
+      panelClass: `${SCROLLABLE_PANEL}`,
     }),
 
     consolePlugin({
