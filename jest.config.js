@@ -4,6 +4,9 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '**/*.js',
+    '!**/App.js',
+    '!**/index.js',
+    '!**/store.js',
     '!**/node_modules/**',
   ],
   coverageReporters: [
@@ -20,8 +23,7 @@ module.exports = {
     },
   },
   roots: [
-    // only test module code, not integration
-    'src/app-console',
+    'src',
   ],
   setupTestFrameworkScriptFile: './.jest/bootstrap.js',
   setupFiles: [

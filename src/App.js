@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { shape } from 'prop-types';
 import { css } from 'glamor';
 import jsCookie from 'js-cookie';
+import consoleCheck from './consoleCheck';
 
 const styles = {
   consoleBtn: css({
@@ -35,71 +36,29 @@ class App extends Component {
     
     this.state = {
       Console: () => null,
-      consoleEnabled: jsCookie.get(COOKIE),
+      consoleEnabled: jsCookie.get(COOKIE) !== undefined,
     };
     
     this.handleEDConsole = this.handleEDConsole.bind(this);
   }
   
   componentDidMount() {
-    const cookieOptions = {
-      maxAge: 60 * 60 * 24 * 365 * 2,
-      path: '/',
-    };
-    
-    window.enableConsole = () => {
-      const Loadable = require('react-loadable');
-      const { store } = this.context;
-
-      this.setState({
-        Console: Loadable.Map({
-          loader: {
-            appConsole: () => import(
-              /* webpackChunkName: "appConsole" */
-              './app-console'
-            ),
-            consolePlugins: () => import(
-              /* webpackChunkName: "consolePlugins" */
-              './consolePlugins'
-            ),
-          },
-          loading: () => null,
-          render: (loaded) => {
-            const { Console } = loaded.appConsole;
-            const { default: consolePlugins } = loaded.consolePlugins;
-            const plugins = consolePlugins({
-              appConsole: loaded.appConsole,
-              store,
-            });
-
-            return <Console plugins={plugins} />;
-          },
-        }),
-        consoleEnabled: true,
-      });
-
-      jsCookie.set(COOKIE, true, cookieOptions);
-    };
-
-    window.disableConsole = () => {
-      jsCookie.remove(COOKIE, {
-        domain: cookieOptions.domain,
-        path: cookieOptions.path,
-      });
+    consoleCheck({
+      component: this,
+      cookieOptions: {
+        maxAge: 60 * 60 * 24 * 365 * 2,
+        path: '/',
+      },
+    });
+  }
+  
+  handleEDConsole() {
+    if (jsCookie.get(COOKIE) !== undefined) {
+      window.disableConsole();
       this.setState({
         Console: () => null,
         consoleEnabled: false,
       });
-    };
-
-    if (jsCookie.get(COOKIE)) {
-      window.enableConsole();
-    }
-  }
-  
-  handleEDConsole() {
-    if (jsCookie.get(COOKIE)) {
-      window.disableConsole();
     }
     else {
       window.enableConsole();
