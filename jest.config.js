@@ -4,9 +4,9 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '**/*.js',
-    '!**/App.js',
-    '!**/index.js',
-    '!**/store.js',
+    '!src/index.js',
+    '!src/App.js',
+    '!src/store.js',
     '!**/node_modules/**',
   ],
   coverageReporters: [
