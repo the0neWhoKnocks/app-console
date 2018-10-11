@@ -2,7 +2,7 @@ import { css } from 'glamor';
 import { connect } from 'react-redux';
 import { actions } from './store';
 
-export const SCROLLABLE_PANEL = css({
+export const scrollablePanelStyles = () => css({
   overflowY: 'auto',
 });
 
@@ -17,6 +17,8 @@ const plugins = ({
     Providers,
     consolePlugin,
   } = appConsole;
+  
+  const SCROLLABLE_PANEL = scrollablePanelStyles();
   
   return [
     consolePlugin({

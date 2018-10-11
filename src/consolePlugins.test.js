@@ -2,9 +2,10 @@ import React from 'react';
 import 'react-redux';
 import { actions } from './store';
 import consolePlugins, {
-  SCROLLABLE_PANEL,
+  scrollablePanelStyles,
 } from './consolePlugins';
 
+const SCROLLABLE_PANEL = scrollablePanelStyles();
 let mockState;
 let mockStore;
 

@@ -4,10 +4,10 @@ import jsCookie from 'js-cookie';
 
 export const COOKIE = 'APP_CONSOLE';
 
-export const handlePluginLoad = (ndx) => {
+export const handlePluginLoad = (cookieOptions, ndx) => {
   jsCookie.set(COOKIE, {
     pluginNdx: +ndx,
-  });
+  }, cookieOptions);
 };
 
 export default ({
@@ -18,7 +18,7 @@ export default ({
     window.enableConsole = () => {
       const Loadable = require('react-loadable');
       const { store } = component.context;
-      let cookieVal = jsCookie.getJSON(COOKIE);
+      const cookieVal = jsCookie.getJSON(COOKIE);
       
       component.setState({
         Console: Loadable.Map({
@@ -42,7 +42,7 @@ export default ({
             });
             const consoleProps = {
               plugins,
-              onPluginLoad: handlePluginLoad,
+              onPluginLoad: handlePluginLoad.bind(null, cookieOptions),
             };
             
             if(cookieVal) consoleProps.defaultPluginNdx = cookieVal.pluginNdx;
