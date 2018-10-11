@@ -12,12 +12,14 @@ import {
 const styles = {
   root: css({
     width: '100%',
-    columnCount: 2,
+    display: ['block', 'grid'],
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gridGap: '1px',
     padding: 0,
     margin: 0,
     
     [mobile]: {
-      columnCount: 1,
+      display: 'block',
     },
   }),
 
@@ -60,6 +62,7 @@ const styles = {
       ],
       textTransform: 'none',
       whiteSpace: 'nowrap',
+      padding: '0.25em',
       borderColor: [
         MODULE_BG_PRIMARY_COLOR,
         'var(--console-module-bg-primary-color)',

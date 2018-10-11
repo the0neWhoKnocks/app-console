@@ -130,13 +130,13 @@ describe('consoleCheck', () => {
   });
 
   describe('handlePluginLoad', () => {
-    it('should ', () => {
+    it('should store data about the currently loaded plugin', () => {
       const ndx = '2';
-      handlePluginLoad(ndx);
+      handlePluginLoad(cookieOptions, ndx);
       
       expect(jsCookie.set).toHaveBeenCalledWith(COOKIE, {
         pluginNdx: +ndx,
-      });
+      }, cookieOptions);
     });
   });
 });
