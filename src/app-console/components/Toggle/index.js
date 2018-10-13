@@ -35,7 +35,7 @@ const Toggle = ({
         style={childStyle}
         title={title}
       >
-        <div className="toggle__content-wrapper">
+        <div className={`toggle__content-wrapper ${styles.contentWrapper}`}>
           {children}
         </div>
       </label>

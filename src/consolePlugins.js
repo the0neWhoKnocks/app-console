@@ -23,7 +23,7 @@ const plugins = ({
   return [
     consolePlugin({
       Component: AppStore,
-      icon: 'layers',
+      icon: 'storage',
       id: 'storeConsolePlugin',
       name: 'Store',
       panelClass: `${SCROLLABLE_PANEL}`,
@@ -53,7 +53,7 @@ const plugins = ({
           setFlags: flags => dispatch(actions.setFlags(flags)),
         }),
       )(FeatureFlags),
-      icon: 'book',
+      icon: 'toggle_off',
       id: 'flagsConsolePlugin',
       name: 'Flags',
       panelClass: `${SCROLLABLE_PANEL}`,

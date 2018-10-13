@@ -44,6 +44,10 @@ const styles = {
       pointerEvents: 'none',
     },
   }),
+  
+  contentWrapper: css({
+    pointerEvents: 'none',
+  }),
 };
 
 export default styles;

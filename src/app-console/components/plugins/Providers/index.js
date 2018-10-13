@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { arrayOf, number, oneOfType, shape, string } from 'prop-types';
+import { arrayOf, bool, number, oneOfType, shape, string } from 'prop-types';
 import DataNode from '../../DataNode';
 import ConsolePluginError from '../../ConsolePluginError';
 import styles from './styles';
@@ -47,7 +47,7 @@ class Providers extends Component {
 
     // only accounting for seconds and milliseconds since requests shouldn't be taking minutes
     if (num >= 1000) {
-      num = num / 1000;
+      num /= 1000;
       format = 's';
     }
 
@@ -115,7 +115,7 @@ class Providers extends Component {
           <button
             className={`${styles.closeRegion}`}
             onClick={this.handleModalClose}
-          ></button>
+          />
           {this.state.modalData && <DataNode data={this.state.modalData} sort={false} />}
           <div className={`${styles.fakeCloseBtn}`}>
             <i className="material-icons">clear</i>
@@ -137,10 +137,24 @@ Providers.propTypes = {
     ]),
     name: string,
     resp: shape({
+      msg: string,
+      payload: oneOfType([
+        bool,
+        number,
+        shape({}),
+        string,
+      ]),
       status: number, // http status code
     }),
     req: shape({
-      url: string,
+      data: oneOfType([
+        bool,
+        number,
+        shape({}),
+        string,
+      ]),
+      type: string, // GET, POST, etc
+      url: string, // The request URL 
     }),
   })),
 };

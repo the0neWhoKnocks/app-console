@@ -61,7 +61,7 @@ describe('consolePlugins', () => {
     it('should set up the AppStore plugin', () => {
       expect(plugin).toEqual({
         Component: expect.any(Function),
-        icon: 'layers',
+        icon: 'storage',
         id: 'storeConsolePlugin',
         name: 'Store',
         panelClass: `${SCROLLABLE_PANEL}`,
@@ -93,7 +93,7 @@ describe('consolePlugins', () => {
 
     it('should set up the FeatureFlags plugin', () => {
       expect(plugin).toEqual(expect.objectContaining({
-        icon: 'book',
+        icon: 'toggle_off',
         id: 'flagsConsolePlugin',
         name: 'Flags',
         panelClass: `${SCROLLABLE_PANEL}`,
