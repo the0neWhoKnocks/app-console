@@ -6,7 +6,6 @@ import styles from './styles';
 describe('Providers', () => {
   const dataNdx = 0;
   let wrapper;
-  let instance;
   let props;
   let ev;
 
@@ -101,8 +100,8 @@ describe('Providers', () => {
     expect(dataNode.length).toBe(0);
   };
 
-  const verifyVisibleEls = (visible, hidden, props = {}) => {
-    wrapper = shallow(<Providers {...props} />);
+  const verifyVisibleEls = (visible, hidden, elProps = {}) => {
+    wrapper = shallow(<Providers {...elProps} />);
 
     visible.forEach((selector) => {
       expect(wrapper.find(selector).length).toBe(1);
