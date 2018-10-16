@@ -12,6 +12,10 @@ export const MODULE_BG_PRIMARY_COLOR = '#00182754';
 export const MODULE_BG_SECONDARY_COLOR = '#81d4ff26';
 export const REVEAL_SPEED = 300;
 
+// NOTE - It's important that insert's only have one rule in them. Otherwise,
+// in `production` mode, `speedy` kicks in and tries to use the browser's
+// built-in `sheet.insertRule` which will fail with multiple rules. In dev mode
+// it builds out and inserts a textNode which has no problems with multiple rules.
 css.insert(`
   :root {
     --console-btn-x-pos: ${BTN_X_POS};
@@ -23,7 +27,8 @@ css.insert(`
     --console-module-bg-primary-color: ${MODULE_BG_PRIMARY_COLOR};
     --console-module-bg-secondary-color: ${MODULE_BG_SECONDARY_COLOR};
   }
-
+`);
+css.insert(`
   .material-icons {
     font-size: inherit;
   }
