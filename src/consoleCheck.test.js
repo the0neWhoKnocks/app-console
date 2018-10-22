@@ -1,7 +1,10 @@
 import React from 'react';
+import 'react-dom';
 import { shallow } from 'enzyme';
 import jsCookie from 'js-cookie';
 import 'react-loadable';
+import './app-console';
+import './consolePlugins';
 import consoleCheck, {
   COOKIE,
   handlePluginLoad,
@@ -9,19 +12,33 @@ import consoleCheck, {
 
 const mock_LOADABLE_RET = 'LoadableComponent';
 let loadableConfig;
+let mockPortalArgs;
 
 jest.mock('js-cookie');
+jest.mock('react-dom', () => ({
+  createPortal: jest.fn((component, el) => {
+    mockPortalArgs = {
+      component,
+      el,
+    };
+    return component;
+  }),
+}));
 jest.mock('react-loadable', () => ({
   Map: (conf) => {
     loadableConfig = conf;
     return mock_LOADABLE_RET;
   },
 }));
+jest.mock('./app-console', () => {});
+jest.mock('./consolePlugins', () => {});
 
 describe('consoleCheck', () => {
   let component;
   let cookieOptions;
   let state;
+  
+  document.body.innerHTML = '<div id="appConsoleRoot"></div>';
 
   beforeEach(() => {
     component = {
@@ -76,7 +93,13 @@ describe('consoleCheck', () => {
         appConsole: { Console },
         consolePlugins,
       };
+      mockPortalArgs = undefined;
       wrapper = shallow(loadableConfig.render(loaded));
+    });
+    
+    it('should render the Console via a Portal', () => {
+      expect(mockPortalArgs.component.type.name).toEqual('Console');
+      expect(mockPortalArgs.el.id).toEqual('appConsoleRoot');
     });
 
     it('should initialize a Loadable component', () => {

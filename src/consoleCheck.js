@@ -17,6 +17,7 @@ export default ({
   if (!window.enableConsole) {
     window.enableConsole = () => {
       const Loadable = require('react-loadable');
+      const ReactDOM = require('react-dom');
       const { store } = component.context;
       const cookieVal = jsCookie.getJSON(COOKIE);
       
@@ -47,7 +48,10 @@ export default ({
             
             if(cookieVal) consoleProps.defaultPluginNdx = cookieVal.pluginNdx;
             
-            return <Console {...consoleProps} />;
+            return ReactDOM.createPortal(
+              <Console {...consoleProps} />,
+              document.getElementById('appConsoleRoot')
+            );
           },
         }),
         consoleEnabled: true,
