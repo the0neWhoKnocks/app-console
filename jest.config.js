@@ -1,6 +1,6 @@
 module.exports = {
   automock: false,
-  bail: true,
+  bail: false,
   collectCoverage: true,
   collectCoverageFrom: [
     '**/*.js',
@@ -31,5 +31,5 @@ module.exports = {
   ],
   // so you don't get a SecurityError while testing `history`
   testURL: 'http://localhost',
-  verbose: true,
+  verbose: false,
 };

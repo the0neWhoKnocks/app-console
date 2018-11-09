@@ -8,7 +8,7 @@ import { REVEAL_SPEED } from './styles';
 describe('Console', () => {
   let wrapper;
   let instance;
-  
+
   beforeEach(() => {
     jest.useFakeTimers();
   });
@@ -23,6 +23,7 @@ describe('Console', () => {
     expect(instance.state).toEqual({
       activePlugin: undefined,
       isOpen: false,
+      isTransparent: false,
       pluginNdx: undefined,
       stylesLoaded: false,
     });
@@ -72,7 +73,7 @@ describe('Console', () => {
 
       expect(instance.state.isOpen).toBe(true);
       expect(instance.loadFirstPlugin).toHaveBeenCalled();
-      
+
       Console.prototype.loadFirstPlugin.mockRestore();
     });
   });
@@ -81,7 +82,7 @@ describe('Console', () => {
     let ev;
     let plugins;
     let loadHandler;
-    
+
     beforeEach(() => {
       ev = {
         currentTarget: {
@@ -99,19 +100,19 @@ describe('Console', () => {
       ];
       loadHandler = jest.fn();
     });
-    
+
     it('should display the current plugin', () => {
       wrapper = mount(<Console plugins={plugins} />).instance();
 
       expect(wrapper.state.activePlugin).toBe(undefined);
       expect(wrapper.state.pluginNdx).toBe(undefined);
-      
+
       wrapper.handlePluginToggle(ev);
 
       expect(wrapper.state.activePlugin).toBe(ev.currentTarget.id);
       expect(wrapper.state.pluginNdx).toBe(ev.currentTarget.dataset.ndx);
     });
-    
+
     it('should call the "plugin load" handler if it exists', () => {
       wrapper = mount(
         <Console
@@ -125,36 +126,60 @@ describe('Console', () => {
       expect(loadHandler).toHaveBeenCalled();
     });
   });
-  
+
+  describe('handleTransparencyToggle', () => {
+    let ev;
+
+    beforeEach(() => {
+      ev = {
+        currentTarget: {
+          checked: true,
+        },
+      };
+    });
+
+    it('should make the Console transparent', () => {
+      wrapper = mount(<Console />);
+      instance = wrapper.instance();
+
+      expect(instance.state.isTransparent).toBe(false);
+
+      instance.handleTransparencyToggle(ev);
+      wrapper.update();
+
+      expect(instance.state.isTransparent).toBe(true);
+    });
+  });
+
   describe('loadFirstPlugin', () => {
     let pluginNdx;
     let plugins;
-    
+
     beforeEach(() => {
       plugins = [
         {
           id: 'firstPlugin',
-        }, 
+        },
         {
           id: 'secondPlugin',
-        }
+        },
       ];
       wrapper = mount(<Console plugins={plugins} />);
       instance = wrapper.instance();
       instance.handlePluginToggle = jest.fn();
     });
-    
+
     it('should NOT do anything if the console is closed', () => {
       wrapper.setState({
         isOpen: false,
       });
-      
+
       instance.loadFirstPlugin();
       jest.runTimersToTime(REVEAL_SPEED);
 
       expect(instance.handlePluginToggle).not.toHaveBeenCalled();
     });
-    
+
     it('should open the last viewed plugin in the current console session', () => {
       pluginNdx = 1;
       wrapper.setState({
@@ -163,7 +188,7 @@ describe('Console', () => {
       });
       instance.loadFirstPlugin();
       jest.runTimersToTime(REVEAL_SPEED);
-    
+
       expect(instance.handlePluginToggle).toHaveBeenCalledWith({
         currentTarget: {
           id: plugins[pluginNdx].id,
@@ -171,7 +196,7 @@ describe('Console', () => {
         },
       });
     });
-    
+
     it('should open the plugin based on saved data', () => {
       pluginNdx = 1;
       wrapper.setProps({
@@ -182,7 +207,7 @@ describe('Console', () => {
       });
       instance.loadFirstPlugin();
       jest.runTimersToTime(REVEAL_SPEED);
-    
+
       expect(instance.handlePluginToggle).toHaveBeenCalledWith({
         currentTarget: {
           id: plugins[pluginNdx].id,
@@ -190,14 +215,14 @@ describe('Console', () => {
         },
       });
     });
-    
+
     it('should open the default plugin', () => {
       wrapper.setState({
         isOpen: true,
       });
       instance.loadFirstPlugin();
       jest.runTimersToTime(REVEAL_SPEED);
-    
+
       expect(instance.handlePluginToggle).toHaveBeenCalledWith({
         currentTarget: {
           id: plugins[0].id,

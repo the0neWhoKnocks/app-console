@@ -23,10 +23,10 @@ const formatTimestamp = (time) => {
 };
 
 const MetaData = ({ data }) => {
-  if(!data.length){
+  if (!data.length) {
     return (
       <ConsolePluginError>
-        No meta-data provided.
+        No data provided.
       </ConsolePluginError>
     );
   }
@@ -38,7 +38,7 @@ const MetaData = ({ data }) => {
     <div className={`${styles.root}`}>
       <div className={`${styles.body}`}>
         <div className={`${styles.column}`}>
-          {sortedData.map((att) => (
+          {sortedData.map(att => (
             <div key={att.name} className={`${styles.columnCell}`}>
               <div>{att.name}</div>
             </div>

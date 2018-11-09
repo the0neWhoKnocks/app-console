@@ -22,6 +22,7 @@ jest.mock('react-redux', () => ({
 jest.mock('./store', () => ({
   actions: {
     setFlags: jest.fn(),
+    setOverrides: jest.fn(),
   },
 }));
 
@@ -35,13 +36,16 @@ describe('consolePlugins', () => {
       flags: {
         isDisabled: false,
       },
+      overrides: {
+        opt1: true,
+      },
       metaData: {},
       providers: {},
     };
     appConsole = {
+      AppInfo: () => <div />,
+      AppOptions: () => <div />,
       AppStore: () => <div />,
-      FeatureFlags: () => <div />,
-      MetaData: () => <div />,
       Providers: () => <div />,
       consolePlugin: jest.fn(pluginConfig => pluginConfig),
     };
@@ -52,10 +56,26 @@ describe('consolePlugins', () => {
 
     plugins = consolePlugins({ appConsole, store: mockStore });
   });
+  
+  describe('AppInfo Plugin', () => {
+    beforeEach(() => {
+      plugin = plugins[0];
+    });
+
+    it('should set up the AppInfo plugin', () => {
+      expect(plugin).toEqual({
+        Component: expect.any(Function),
+        icon: 'info',
+        id: 'infoConsolePlugin',
+        name: 'Info',
+        props: { data: mockState.metaData },
+      });
+    });
+  });
 
   describe('AppStore Plugin', () => {
     beforeEach(() => {
-      plugin = plugins[0];
+      plugin = plugins[1];
     });
 
     it('should set up the AppStore plugin', () => {
@@ -69,10 +89,55 @@ describe('consolePlugins', () => {
       });
     });
   });
+  
+  describe('AppOptions Plugin', () => {
+    beforeEach(() => {
+      plugin = plugins[2];
+    });
+
+    it('should set up the AppOptions plugin', () => {
+      expect(plugin).toEqual(expect.objectContaining({
+        icon: 'toggle_off',
+        id: 'optionsConsolePlugin',
+        name: 'Options',
+        panelClass: `${SCROLLABLE_PANEL}`,
+      }));
+      expect(plugin.Component.type).toEqual(expect.any(Function));
+      expect(plugin.Component.props).toEqual({
+        changeOptions: expect.any(Function),
+        sections: [
+          {
+            addParam: true,
+            handler: 'setFlags',
+            options: mockState.flags,
+            queryPrefix: 'flags.',
+            title: 'Feature Flags',
+          },
+          {
+            handler: 'setOverrides',
+            options: mockState.overrides,
+            title: 'Overrides',
+          },
+        ],
+      });
+    });
+
+    it('should update options with new value', () => {
+      let newOpts = { isDisabled: true };
+      let handler = 'setFlags';
+      plugin.Component.props.changeOptions(newOpts, handler);
+      expect(actions[handler]).toHaveBeenCalledWith(newOpts);
+      
+      newOpts = { opt1: false };
+      handler = 'setOverrides';
+      plugin.Component.props.changeOptions(newOpts, handler);
+      expect(actions[handler]).toHaveBeenCalledWith(newOpts);
+    });
+  });
 
   describe('Providers Plugin', () => {
     beforeEach(() => {
-      plugin = plugins[1];
+      plugin = plugins[3];
     });
 
     it('should set up the Providers plugin', () => {
@@ -82,51 +147,6 @@ describe('consolePlugins', () => {
         id: 'providersConsolePlugin',
         name: 'Providers',
         props: { providers: mockState.providers },
-      });
-    });
-  });
-
-  describe('FeatureFlags Plugin', () => {
-    beforeEach(() => {
-      plugin = plugins[2];
-    });
-
-    it('should set up the FeatureFlags plugin', () => {
-      expect(plugin).toEqual(expect.objectContaining({
-        icon: 'toggle_off',
-        id: 'flagsConsolePlugin',
-        name: 'Flags',
-        panelClass: `${SCROLLABLE_PANEL}`,
-      }));
-      expect(plugin.Component.type).toEqual(expect.any(Function));
-      expect(plugin.Component.props).toEqual({
-        flags: mockState.flags,
-        setFlags: expect.any(Function),
-      });
-    });
-
-    it('should update flags with new value', () => {
-      const updatedFlags = {
-        isDisabled: true,
-      };
-      plugin.Component.props.setFlags(updatedFlags);
-      
-      expect(actions.setFlags).toHaveBeenCalledWith(updatedFlags);
-    });
-  });
-  
-  describe('MetaData Plugin', () => {
-    beforeEach(() => {
-      plugin = plugins[3];
-    });
-
-    it('should set up the MetaData plugin', () => {
-      expect(plugin).toEqual({
-        Component: expect.any(Function),
-        icon: 'info',
-        id: 'metadataConsolePlugin',
-        name: 'Meta Data',
-        props: { data: mockState.metaData },
       });
     });
   });

@@ -4,6 +4,7 @@ import { css } from 'glamor';
 // we can use them in the fallback rules.
 export const BTN_X_POS = '0.5em';
 export const BTN_Y_POS = '0.5em';
+export const CONSOLE_BG_COLOR = '#333333';
 export const PLUGIN_BTN_COLOR = '#ccc';
 export const PLUGIN_BTN_TOGGLED_COLOR = '#333';
 export const MODULE_FONT_PRIMARY_COLOR = '#a5edff';
@@ -18,6 +19,7 @@ export const REVEAL_SPEED = 300;
 // it builds out and inserts a textNode which has no problems with multiple rules.
 css.insert(`
   :root {
+    --console-bg-color: ${CONSOLE_BG_COLOR};
     --console-btn-x-pos: ${BTN_X_POS};
     --console-btn-y-pos: ${BTN_Y_POS};
     --console-plugin-btn-color: ${PLUGIN_BTN_COLOR};
@@ -31,6 +33,7 @@ css.insert(`
 css.insert(`
   .material-icons {
     font-size: inherit;
+    vertical-align: middle;
   }
 `);
 
@@ -44,9 +47,9 @@ const animations = {
       ret[perc] = {
         backgroundImage: [
           // fallback rule for older browsers
-          `radial-gradient(circle at ${BTN_X_POS} ${BTN_Y_POS}, ${PLUGIN_BTN_TOGGLED_COLOR} ${perc}, transparent ${perc})`,
+          `radial-gradient(circle at ${BTN_X_POS} ${BTN_Y_POS}, ${CONSOLE_BG_COLOR} ${perc}, transparent ${perc})`,
           // utilizing CSS variables
-          `radial-gradient(circle at var(--console-btn-x-pos) var(--console-btn-y-pos), var(--console-plugin-btn-toggled-color) ${perc}, transparent ${perc})`,
+          `radial-gradient(circle at var(--console-btn-x-pos) var(--console-btn-y-pos), var(--console-bg-color) ${perc}, transparent ${perc})`,
         ],
       };
     }
@@ -90,7 +93,7 @@ const styles = {
     flexFlow: 'column',
     zIndex: 100,
 
-    '&.is--open': {
+    '.is--open': {
       pointerEvents: 'all',
     },
   }),
@@ -114,6 +117,19 @@ const styles = {
     },
   }),
 
+  transparencyToggle: css({
+    position: 'absolute',
+    top: '1em',
+    right: '0.5em',
+    fontSize: '0.3em !important',
+    zIndex: '101',
+    display: 'none',
+
+    '.is--open &': {
+      display: 'block',
+    },
+  }),
+
   mask: css({
     width: '100%',
     height: '100%',
@@ -121,14 +137,20 @@ const styles = {
     top: 0,
     left: 0,
     pointerEvents: 'none',
+    transition: 'opacity 0.25s',
 
     '.is--open &': {
       animation: `${animations.expand(50)} ${revealSpeed} forwards`,
     },
+
+    '.is--transparent': {
+      opacity: '0.9',
+    },
   }),
 
   toggles: css({
-    paddingLeft: '5em',
+    paddingLeft: '5em', // account for Console toggle
+    paddingRight: '2em', // account for transparency toggle
     paddingTop: '0.5em',
     position: 'relative',
     transition: `background ${revealSpeed}`,
@@ -149,7 +171,7 @@ const styles = {
 
   toggle: css({
     font: fontReset,
-    
+
     '.toggle': {
       margin: '0em 0.5em 0.5em 0em',
     },
@@ -226,6 +248,11 @@ const styles = {
 
   pluginIcon: css({
     fontSize: '4.8em',
+    display: 'block',
+  }),
+
+  pluginName: css({
+    marginTop: '0.5em',
     display: 'block',
   }),
 };

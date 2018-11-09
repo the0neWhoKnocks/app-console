@@ -20,7 +20,7 @@ describe('MetaData', () => {
         {
           name: 'fu',
           value: 'bar',
-        }
+        },
       ],
     };
 
@@ -51,13 +51,11 @@ describe('MetaData', () => {
     columns.forEach((column, columnNdx) => {
       column.find(`.${styles.columnCell}`).forEach((cell, cellNdx) => {
         // left column (names)
-        if(columnNdx === 0){
+        if (columnNdx === 0) {
           (cellNdx === 0)
             ? expect(cell.text()).toEqual(props.data[1].name)
             : expect(cell.text()).toEqual(props.data[0].name);
-        }
-        // right column (values)
-        else{
+        } else { // right column (values)
           (cellNdx === 0)
             ? expect(cell.text()).toEqual(props.data[1].value)
             : expect(cell.text()).toEqual(props.data[0].value);
@@ -82,7 +80,6 @@ describe('MetaData', () => {
   });
 
   describe('formatTimestamp', () => {
-
     it('should account for strings and numbers', () => {
       expect(formatTimestamp('1525877727373')).toEqual('04/09/2018 07:55am PST');
       expect(formatTimestamp(1525877727373)).toEqual('04/09/2018 07:55am PST');

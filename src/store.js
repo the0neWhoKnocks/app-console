@@ -11,6 +11,10 @@ const initialState = {
     feature_H: true,
     feature_F: true,
   },
+  overrides: {
+    opt_1: true,
+    opt_2: false,
+  },
   topLevelString: "I'm just here to \"demonstrate\" other data",
   bigBoy: {
     'this': {
@@ -101,22 +105,35 @@ Object.keys(metaDataAtts).forEach((ndx) => {
 
 const types = {
   SET_FLAGS: 'SET_FLAGS',
+  SET_OVERRIDES: 'SET_OVERRIDES',
 };
 
 const actions = {
   setFlags: (flags) => ({
     type: types.SET_FLAGS,
-    flags,
+    payload: flags,
+  }),
+  
+  setOverrides: (overrides) => ({
+    type: types.SET_OVERRIDES,
+    payload: overrides,
   })
 };
 
-const reducers = (state = initialState, action) => {
-  switch (action.type) {
+const reducers = (state = initialState, { payload, type }) => {
+  switch (type) {
     case types.SET_FLAGS:
-      const n = Object.assign({}, state, {
-        flags: action.flags
-      });
-      return n;
+      return {
+        ...state,
+        flags: payload,
+      };
+      
+    case types.SET_OVERRIDES:
+      return {
+        ...state,
+        overrides: payload,
+      };
+    
     default:
       return state;
   }

@@ -1,4 +1,9 @@
 import { css } from 'glamor';
+import {
+  MODULE_BG_PRIMARY_COLOR,
+  MODULE_BG_SECONDARY_COLOR,
+  MODULE_FONT_PRIMARY_COLOR,
+} from '../../Console/styles';
 
 const styles = {
   root: css({
@@ -6,12 +11,18 @@ const styles = {
   }),
 
   body: css({
-    color: 'var(--console-module-font-primary-color)',
+    color: [
+      MODULE_FONT_PRIMARY_COLOR,
+      'var(--console-module-font-primary-color)',
+    ],
     fontFamily: 'monospace',
     fontSize: '1.2em',
     border: 'solid 1px',
     borderCollapse: 'collapse',
-    background: 'var(--console-module-bg-primary-color)',
+    background: [
+      MODULE_BG_PRIMARY_COLOR,
+      'var(--console-module-bg-primary-color)',
+    ],
     display: 'flex',
     overflow: 'auto',
   }),
@@ -35,7 +46,10 @@ const styles = {
     padding: '0.5em 0.75em',
 
     ':nth-child(even)': {
-      background: 'var(--console-module-bg-secondary-color)',
+      background: [
+        MODULE_BG_SECONDARY_COLOR,
+        'var(--console-module-bg-secondary-color)',
+      ],
     },
   }),
 };
