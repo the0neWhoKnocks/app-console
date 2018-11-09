@@ -9,6 +9,7 @@ import styles, {
 
 const globalStyles = [
   {
+    // NOTE - You can view all icons and their names here https://material.io/tools/icons/?style=baseline
     href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
     id: 'materialIcons',
   },
@@ -20,11 +21,13 @@ class Console extends Component {
     this.state = {
       activePlugin: undefined,
       isOpen: props.toggled,
+      isTransparent: false,
       pluginNdx: undefined,
       stylesLoaded: false,
     };
     this.handleConsoleToggle = this.handleConsoleToggle.bind(this);
     this.handlePluginToggle = this.handlePluginToggle.bind(this);
+    this.handleTransparencyToggle = this.handleTransparencyToggle.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +51,7 @@ class Console extends Component {
       stylesLoaded: true,
     });
   }
-  
+
   loadFirstPlugin() {
     const {
       defaultPluginNdx,
@@ -58,12 +61,12 @@ class Console extends Component {
       isOpen,
       pluginNdx,
     } = this.state;
-    
-    if(isOpen){
+
+    if (isOpen) {
       setTimeout(() => {
         const ndx = pluginNdx || defaultPluginNdx || 0;
         const plugin = plugins[ndx];
-        
+
         this.handlePluginToggle({
           currentTarget: {
             id: plugin.id,
@@ -89,14 +92,27 @@ class Console extends Component {
       activePlugin: toggle.id,
       pluginNdx: toggle.dataset.ndx,
     }, () => {
-      if(onPluginLoad) onPluginLoad(this.state.pluginNdx);
+      if (onPluginLoad) onPluginLoad(this.state.pluginNdx);
+    });
+  }
+
+  handleTransparencyToggle(ev) {
+    this.setState({
+      isTransparent: ev.currentTarget.checked,
     });
   }
 
   render() {
     const { plugins } = this.props;
-    const { activePlugin, isOpen, pluginNdx, stylesLoaded } = this.state;
+    const {
+      activePlugin,
+      isOpen,
+      isTransparent,
+      pluginNdx,
+      stylesLoaded,
+    } = this.state;
     const consoleOpen = isOpen ? ' is--open' : '';
+    const transparentClass = isTransparent ? ' is--transparent' : '';
     const togglesClass = activePlugin ? ' plugin-active' : '';
     let currPlugin;
 
@@ -105,7 +121,7 @@ class Console extends Component {
         <div
           className={`console ${styles.base} ${styles.console} ${consoleOpen}`}
         >
-          <div className={`${styles.mask}`} />
+          <div className={`${styles.mask} ${transparentClass}`} />
           <div className={`${styles.toggles} ${togglesClass}`}>
             <div className={`${styles.togglesWrapper}`}>
               {plugins.map((plugin, ndx) => {
@@ -127,11 +143,19 @@ class Console extends Component {
                     <i className={`${styles.pluginIcon} material-icons`}>
                       {plugin.icon}
                     </i>
-                    {plugin.name}
+                    <span className={styles.pluginName}>{plugin.name}</span>
                   </Toggle>
                 );
               })}
             </div>
+            <Toggle
+              id="consoleTransparency"
+              onToggle={this.handleTransparencyToggle}
+              rootClass={`${styles.toggle} ${styles.transparencyToggle}  ${(stylesLoaded) ? 'is--visible' : ''}`}
+              toggled={isTransparent}
+            >
+              <i className="material-icons">visibility</i>
+            </Toggle>
           </div>
           {currPlugin && (
             <Slide

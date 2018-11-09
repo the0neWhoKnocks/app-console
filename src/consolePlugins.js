@@ -11,9 +11,9 @@ const plugins = ({
   store,
 }) => {
   const {
+    AppInfo,
+    AppOptions,
     AppStore,
-    FeatureFlags,
-    MetaData,
     Providers,
     consolePlugin,
   } = appConsole;
@@ -21,6 +21,16 @@ const plugins = ({
   const SCROLLABLE_PANEL = scrollablePanelStyles();
   
   return [
+    consolePlugin({
+      Component: AppInfo,
+      icon: 'info',
+      id: 'infoConsolePlugin',
+      name: 'Info',
+      props: {
+        data: store.getState().metaData,
+      },
+    }),
+    
     consolePlugin({
       Component: AppStore,
       icon: 'storage',
@@ -31,7 +41,46 @@ const plugins = ({
         data: store.getState(),
       },
     }),
-
+    
+    consolePlugin({
+      Component: connect(
+        // mapStateToProps
+        (state) => {
+          return {
+            sections: [
+              {
+                addParam: true,
+                handler: 'setFlags',
+                options: state.flags,
+                queryPrefix: 'flags.',
+                title: 'Feature Flags',
+              },
+              {
+                handler: 'setOverrides',
+                options: state.overrides,
+                title: 'Overrides',
+              },
+            ],
+          };
+        },
+        // mapDispatchToProps
+        dispatch => ({
+          changeOptions: (options, handler) => {
+            switch (handler) { // eslint-disable-line default-case
+              case 'setFlags':
+              case 'setOverrides':
+                dispatch(actions[handler](options));
+                break;
+            }
+          },
+        })
+      )(AppOptions),
+      icon: 'toggle_off',
+      id: 'optionsConsolePlugin',
+      name: 'Options',
+      panelClass: `${SCROLLABLE_PANEL}`,
+    }),
+    
     consolePlugin({
       Component: Providers,
       icon: 'device_hub',
@@ -39,33 +88,6 @@ const plugins = ({
       name: 'Providers',
       props: {
         providers: store.getState().providers,
-      },
-    }),
-
-    consolePlugin({
-      Component: connect(
-        // mapStateToProps
-        (state) => ({
-          flags: state.flags,
-        }),
-        // mapDispatchToProps
-        dispatch => ({
-          setFlags: flags => dispatch(actions.setFlags(flags)),
-        }),
-      )(FeatureFlags),
-      icon: 'toggle_off',
-      id: 'flagsConsolePlugin',
-      name: 'Flags',
-      panelClass: `${SCROLLABLE_PANEL}`,
-    }),
-
-    consolePlugin({
-      Component: MetaData,
-      icon: 'info',
-      id: 'metadataConsolePlugin',
-      name: 'Meta Data',
-      props: {
-        data: store.getState().metaData,
       },
     }),
   ];

@@ -1,6 +1,6 @@
 import { css } from 'glamor';
 import {
-  mobile
+  mobile,
 } from '../../../breakpoints';
 import {
   MODULE_BG_PRIMARY_COLOR,
@@ -10,14 +10,14 @@ import {
 } from '../../Console/styles';
 
 const styles = {
-  root: css({
+  list: css({
     width: '100%',
     display: ['block', 'grid'],
     gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
     gridGap: '1px',
     padding: 0,
     margin: 0,
-    
+
     [mobile]: {
       display: 'block',
     },
@@ -43,18 +43,18 @@ const styles = {
     },
   }),
 
-  flagName: css({
+  name: css({
     display: 'inline-block',
     verticalAlign: 'middle',
   }),
 
-  flagToggle: css({
+  toggle: css({
     ' .toggle__content-wrapper': {
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
       overflow: 'hidden',
     },
-    
+
     ' .toggle__btn': {
       color: [
         MODULE_FONT_SECONDARY_COLOR,
@@ -87,6 +87,35 @@ const styles = {
         MODULE_BG_SECONDARY_COLOR,
         'var(--console-module-bg-secondary-color)',
       ],
+    },
+  }),
+
+  section: css({
+    marginTop: '1em',
+
+    ':first-of-type': {
+      marginTop: 0,
+    },
+  }),
+
+  sectionHeader: css({
+    color: '#eee',
+    fontSize: '1.5em',
+    textShadow: '0 0.15em 0.15em #000',
+    padding: '0.25em',
+    marginTop: 0,
+    marginBottom: '0.5em',
+    position: 'relative',
+
+    '::before': {
+      content: `''`,
+      height: '2px',
+      borderRadius: '1em',
+      background: '#ffffff2b',
+      position: 'absolute',
+      bottom: '0.12em',
+      left: 0,
+      right: 0,
     },
   }),
 };

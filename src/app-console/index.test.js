@@ -1,19 +1,19 @@
 import {
-  consolePlugin,
-  Console,
+  AppInfo,
+  AppOptions,
   AppStore,
-  FeatureFlags,
-  MetaData,
+  Console,
   Providers,
+  consolePlugin,
 } from './index';
 
 describe('app-console', () => {
   it('should export everything needed for the console to function', () => {
-    expect(consolePlugin).toBeDefined();
-    expect(Console).toBeDefined();
+    expect(AppInfo).toBeDefined();
+    expect(AppOptions).toBeDefined();
     expect(AppStore).toBeDefined();
-    expect(FeatureFlags).toBeDefined();
-    expect(MetaData).toBeDefined();
+    expect(Console).toBeDefined();
     expect(Providers).toBeDefined();
+    expect(consolePlugin).toBeDefined();
   });
 });
