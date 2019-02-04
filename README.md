@@ -5,6 +5,8 @@
 
 A component used for development or support debugging.
 
+View the [demo here](https://the0newhoknocks.github.io/app-console/).
+
 ![app-console 01](https://user-images.githubusercontent.com/344140/40260163-15e36e5a-5aae-11e8-8d15-39c369fd1b56.gif)
 
 ---
